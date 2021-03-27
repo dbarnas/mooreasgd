@@ -9,7 +9,7 @@
 #' @param path Path to the input files
 #' @param WL_serial Logger serial number used in naming the input file
 #' @param recursive_tf Logical parameter indicating whether to search within folders at the file path. Default = FALSE
-#' @return A cleaned dataframe of pH logger data
+#' @return A cleaned dataframe of CT logger data
 #' @export
 CT_cleanup <- function(path, ct_serial, recursive_tf = FALSE) {
 

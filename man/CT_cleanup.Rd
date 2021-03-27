@@ -14,7 +14,7 @@ CT_cleanup(path, ct_serial, recursive_tf = FALSE)
 \item{WL_serial}{Logger serial number used in naming the input file}
 }
 \value{
-A cleaned dataframe of pH logger data
+A cleaned dataframe of CT logger data
 }
 \description{
 This function loads a raw CT file. It searches a directory for the correct logger's serial number,
