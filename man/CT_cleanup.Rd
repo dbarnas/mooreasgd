@@ -9,9 +9,9 @@ CT_cleanup(path, ct_serial, recursive_tf = FALSE)
 \arguments{
 \item{path}{Path to the input files}
 
-\item{recursive_tf}{Logical parameter indicating whether to search within folders at the file path. Default = FALSE}
+\item{ct_serial}{Logger serial number used in naming the input file}
 
-\item{WL_serial}{Logger serial number used in naming the input file}
+\item{recursive_tf}{Logical parameter indicating whether to search within folders at the file path. Default = FALSE}
 }
 \value{
 A cleaned dataframe of CT logger data
