@@ -7,11 +7,12 @@
 #'
 #' @param data.path Path to the input files
 #' @param output.path Path for the ouput files
+#' @param ct.serial Character string containg serial ID for a particular probe.  Used to filter from full dataset before returning final dataframe
 #' @param tf_write Logical parameter indicating whether to save output files in an output folder. No default.
 #' @param tf_recursive Logical parameter indicating whether to search within folders at the data.path. Default = FALSE
 #' @return For every imported CT data file, one tidied file with temperature-compensated conductance is exported and returned
 #' @export
-CT_roundup<-function(data.path, output.path, tf_write, tf_recursive = FALSE){
+CT_roundup<-function(data.path, output.path, ct.serial, tf_write, tf_recursive = FALSE){
 
   # Create a list of all files within the directory folder
   file.names.Cal<-basename(list.files(data.path, pattern = c("csv$", recursive = tf_recursive))) #list all csv file names in the folder and subfolders
@@ -70,6 +71,12 @@ CT_roundup<-function(data.path, output.path, tf_write, tf_recursive = FALSE){
     if(tf_write == TRUE) {
       write.csv(condCal, paste0(output.path,'/',Data_ID,'_SpConductance.csv'))
     }
+  }
+
+  if(exists('ct.serial')) {
+    pattern <- grep(x = full_df$List.ID, pattern = ct.serial, value = TRUE)
+    full_df <- full_df %>%
+      filter(List.ID == temp[2])
   }
 
   return(full_df) # return a list of dataframes
