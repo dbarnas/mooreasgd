@@ -7,10 +7,11 @@
 #'
 #' @param data.path Path to the input files
 #' @param output.path Path for the ouput files
-#' @param recursive_tf Logical parameter indicating whether to search within folders at the data.path. Default = FALSE
+#' @param tf_write Logical parameter indicating whether to save output files in an output folder. No default.
+#' @param tf_recursive Logical parameter indicating whether to search within folders at the data.path. Default = FALSE
 #' @return For every imported CT data file, one tidied file with temperature-compensated conductance is exported and returned
 #' @export
-CT_roundup<-function(data.path, output.path, tf_recursive = FALSE){
+CT_roundup<-function(data.path, output.path, tf_write, tf_recursive = FALSE){
 
   path<-data.path
 
@@ -57,8 +58,10 @@ CT_roundup<-function(data.path, output.path, tf_recursive = FALSE){
       mutate(Sp_Conductance = 0.889 * (10^(A/B)) * E_Conductivity) %>%
       dplyr::select(-c(A,B))
 
-    write.csv(condCal, paste0(output.path,'/',Data_ID,'_SpConductance.csv'))
+    listofdfs[[i]] <- conCal # save your dataframes into the list
 
+    if(tf_write == TRUE) {
+      write.csv(condCal, paste0(output.path,'/',Data_ID,'_SpConductance.csv'))
+    }
   }
-
 }

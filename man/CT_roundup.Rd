@@ -4,14 +4,16 @@
 \alias{CT_roundup}
 \title{Import, clean up, and export multiple raw conductivity-temperature, CT, data files from the HOBO CT Logger}
 \usage{
-CT_roundup(data.path, output.path, tf_recursive = FALSE)
+CT_roundup(data.path, output.path, tf_write, tf_recursive = FALSE)
 }
 \arguments{
 \item{data.path}{Path to the input files}
 
 \item{output.path}{Path for the ouput files}
 
-\item{recursive_tf}{Logical parameter indicating whether to search within folders at the data.path. Default = FALSE}
+\item{tf_write}{Logical parameter indicating whether to save output files in an output folder. No default.}
+
+\item{tf_recursive}{Logical parameter indicating whether to search within folders at the data.path. Default = FALSE}
 }
 \value{
 For every imported CT data file, one tidied file with temperature-compensated conductance is exported and returned
