@@ -76,7 +76,7 @@ CT_roundup<-function(data.path, output.path, ct.serial, tf_write, tf_recursive =
   if(exists('ct.serial')) {
     pattern <- grep(x = full_df$List.ID, pattern = ct.serial, value = TRUE)
     full_df <- full_df %>%
-      filter(List.ID == temp[2])
+      filter(List.ID == pattern[2])
   }
 
   return(full_df) # return a list of dataframes
