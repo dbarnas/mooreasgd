@@ -58,7 +58,7 @@ CT_roundup<-function(data.path, output.path, tf_write, tf_recursive = FALSE){
       mutate(Sp_Conductance = 0.889 * (10^(A/B)) * E_Conductivity) %>%
       dplyr::select(-c(A,B))
 
-    listofdfs[[i]] <- conCal # save your dataframes into the list
+    listofdfs[[i]] <- condCal # save your dataframes into the list
 
     if(tf_write == TRUE) {
       write.csv(condCal, paste0(output.path,'/',Data_ID,'_SpConductance.csv'))
