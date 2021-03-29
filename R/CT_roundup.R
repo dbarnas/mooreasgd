@@ -64,4 +64,6 @@ CT_roundup<-function(data.path, output.path, tf_write, tf_recursive = FALSE){
       write.csv(condCal, paste0(output.path,'/',Data_ID,'_SpConductance.csv'))
     }
   }
+
+  return(listofdfs) # return a list of dataframes
 }
