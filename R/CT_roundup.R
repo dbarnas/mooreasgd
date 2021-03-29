@@ -13,10 +13,16 @@
 #' @export
 CT_roundup<-function(data.path, output.path, tf_write, tf_recursive = FALSE){
 
-  path<-data.path
-
   # Create a list of all files within the directory folder
-  file.names.Cal<-basename(list.files(path, pattern = c("csv$", recursive = tf_recursive))) #list all csv file names in the folder and subfolders
+  file.names.Cal<-basename(list.files(data.path, pattern = c("csv$", recursive = tf_recursive))) #list all csv file names in the folder and subfolders
+
+  # Create an empty dataframe to store all subsequent tidied df's into
+  full_df <- tibble(
+    date = as.POSIXct(NA),
+    List.ID = as.character(),
+    TempInSitu = as.numeric(),
+    E_Conductivity = as.numeric(),
+    Sp_Conductance = as.numeric())
 
   # For each listed file:
   ## Load the dataframe,
@@ -26,10 +32,10 @@ CT_roundup<-function(data.path, output.path, tf_write, tf_recursive = FALSE){
   for(i in 1:length(file.names.Cal)) {
     Data_ID<-file.names.Cal[[i]]
 
-    file.names<-basename(list.files(path, pattern = c(Data_ID, "csv$", recursive = tf_recursive))) #list all csv file names in the folder and subfolders
+    file.names<-basename(list.files(data.path, pattern = c(Data_ID, "csv$", recursive = tf_recursive))) #list all csv file names in the folder and subfolders
 
     condCal <- file.names %>%
-      purrr::map_dfr(~ readr::read_csv(file.path(path, .), skip=1, col_names=T)) # read all csv files at the file path, skipping 1 line of metadata
+      purrr::map_dfr(~ readr::read_csv(file.path(data.path, .), skip=1, col_names=T)) # read all csv files at the file path, skipping 1 line of metadata
 
     condCal<-condCal %>%
       dplyr::select(contains('Date'), contains("High Range"), contains("Temp")) %>%
@@ -38,7 +44,7 @@ CT_roundup<-function(data.path, output.path, tf_write, tf_recursive = FALSE){
                     TempInSitu=contains("Temp"),
                     E_Conductivity=contains("High Range")) %>%
       tidyr::drop_na() %>%
-      tidyr::separate(col = 'file.id', into = c('file.id',NA), sep = ".csv", remove = T) # remove the '.csv'
+      tidyr::separate(col = 'List.ID', into = c('List.ID',NA), sep = ".csv", remove = T) # remove the '.csv'
 
     # Format date and time
     condCal$date <- condCal$date %>%
@@ -58,12 +64,13 @@ CT_roundup<-function(data.path, output.path, tf_write, tf_recursive = FALSE){
       mutate(Sp_Conductance = 0.889 * (10^(A/B)) * E_Conductivity) %>%
       dplyr::select(-c(A,B))
 
-    listofdfs[[i]] <- condCal # save your dataframes into the list
+    full_df <- full_df %>%
+      full_join(condCal) # save your dataframes into a larger df
 
     if(tf_write == TRUE) {
       write.csv(condCal, paste0(output.path,'/',Data_ID,'_SpConductance.csv'))
     }
   }
 
-  return(listofdfs) # return a list of dataframes
+  return(full_df) # return a list of dataframes
 }
