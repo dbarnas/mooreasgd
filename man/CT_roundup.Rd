@@ -9,9 +9,9 @@ CT_roundup(data.path, output.path, ct.serial, tf_write, tf_recursive = FALSE)
 \arguments{
 \item{data.path}{Path to the input files}
 
-\item{output.path}{Path for the ouput files}
+\item{output.path}{Path for the output files}
 
-\item{ct.serial}{Character string containg serial ID for a particular probe.  Used to filter from full dataset before returning final dataframe}
+\item{ct.serial}{Character string containing serial ID for a particular probe.  Used to filter from full dataset before returning final dataframe}
 
 \item{tf_write}{Logical parameter indicating whether to save output files in an output folder. No default.}
 

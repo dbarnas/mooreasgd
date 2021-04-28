@@ -41,7 +41,7 @@ CT_cleanup <- function(path, ct_serial, recursive_tf = FALSE) {
     mutate(A = (1.37023 * (TempInSitu - 20)) + 8.36 * (10^(-4) * ((TempInSitu - 20)^2))) %>%
     mutate(B = 109 + TempInSitu) %>%
     mutate(Sp_Conductance = 0.889 * (10^(A/B)) * E_Conductivity) %>%
-    dplyr::select(-c(A,B))
+    dplyr::select(-c(A,B)) # remove intermediate columns
 
   return(condCal)
 }
