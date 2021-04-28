@@ -46,7 +46,7 @@ CT_roundup<-function(data.path, output.path, ct.serial = FALSE, tf_write, tf_rec
                     E_Conductivity=contains("High Range")) %>%
       tidyr::drop_na() %>%
       tidyr::separate(col = 'List.ID', into = c('List.ID',NA), sep = ".csv", remove = T) %>%  # remove the '.csv'
-      dplyr::muate(date = lubridate::mdy_hms(date))
+      dplyr::mutate(date = lubridate::mdy_hms(date))
 
     # Format date and time
     # condCal$date <- condCal$date %>%
