@@ -4,7 +4,13 @@
 \alias{CT_roundup}
 \title{Import, clean up, and export multiple raw conductivity-temperature, CT, data files from the HOBO CT Logger}
 \usage{
-CT_roundup(data.path, output.path, ct.serial, tf_write, tf_recursive = FALSE)
+CT_roundup(
+  data.path,
+  output.path,
+  ct.serial = NULL,
+  tf_write,
+  tf_recursive = FALSE
+)
 }
 \arguments{
 \item{data.path}{Path to the input files}
