@@ -75,7 +75,7 @@ CT_roundup<-function(data.path, output.path, ct.serial = NULL, tf_write, tf_recu
     }
   }
 
-  if(exists('ct.serial')) {
+  if(exists(as.character('ct.serial')|as.numeric('ct.serial'))) {
     pattern <- grep(x = full_df$List.ID, pattern = ct.serial, value = TRUE)
     full_df <- full_df %>%
       dplyr::filter(List.ID == pattern[2])
