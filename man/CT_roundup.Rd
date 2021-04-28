@@ -7,7 +7,7 @@
 CT_roundup(
   data.path,
   output.path,
-  ct.serial = NULL,
+  ct.serial = FALSE,
   tf_write,
   tf_recursive = FALSE
 )
