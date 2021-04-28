@@ -70,8 +70,6 @@ CT_roundup<-function(data.path, output.path, ct.serial = FALSE, tf_write, tf_rec
 
     if(tf_write == TRUE) {
       write.csv(condCal, paste0(output.path,'/',Data_ID,'_SpConductance.csv'))
-
-    return(paste0(Data_ID,"_",full_df))
     }
   }
 
