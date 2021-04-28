@@ -19,7 +19,7 @@ CT_roundup<-function(data.path, output.path, ct.serial = FALSE, tf_write, tf_rec
 
   # Create an empty dataframe to store all subsequent tidied df's into
   full_df <- tibble::tibble(
-    date = as.POSIXct(NA),
+    date = as_datetime(NA),
     List.ID = as.character(),
     TempInSitu = as.numeric(),
     E_Conductivity = as.numeric(),
@@ -45,14 +45,15 @@ CT_roundup<-function(data.path, output.path, ct.serial = FALSE, tf_write, tf_rec
                     TempInSitu=contains("Temp"),
                     E_Conductivity=contains("High Range")) %>%
       tidyr::drop_na() %>%
-      tidyr::separate(col = 'List.ID', into = c('List.ID',NA), sep = ".csv", remove = T) # remove the '.csv'
+      tidyr::separate(col = 'List.ID', into = c('List.ID',NA), sep = ".csv", remove = T) %>%  # remove the '.csv'
+      dplyr::muate(date = lubridate::mdy_hms(date))
 
     # Format date and time
-    condCal$date <- condCal$date %>%
-      readr::parse_datetime(format = "%m/%d/%y %H:%M:%S %p", # Convert 'date' to date and time vector type
-                            na = character(),
-                            locale = default_locale(),
-                            trim_ws = TRUE)
+    # condCal$date <- condCal$date %>%
+    #   readr::parse_datetime(format = "%m/%d/%y %H:%M:%S %p", # Convert 'date' to date and time vector type
+    #                         na = character(),
+    #                         locale = default_locale(),
+    #                         trim_ws = TRUE)
 
     ############################################################
     ### Nonlinear Temperature Compensation
