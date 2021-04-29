@@ -80,5 +80,8 @@ CT_roundup<-function(data.path, output.path, ct.serial = FALSE, tf_write, tf_rec
       dplyr::filter(List.ID == pattern[2])
   }
 
+  full_df <- full_df %>%
+    rename(Serial = List.ID)
+
   return(full_df) # return a list of dataframes
 }
