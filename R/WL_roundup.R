@@ -12,7 +12,7 @@
 #' @param tf_recursive Logical parameter indicating whether to search within folders at the data.path. Default = FALSE
 #' @return For every imported CT data file, one tidied file with temperature-compensated conductance is exported and returned
 #' @export
-CT_roundup<-function(data.path, output.path, wl.serial = FALSE, tf_write = FALSE, tf_recursive = FALSE){
+WL_roundup<-function(data.path, output.path, wl.serial = FALSE, tf_write = FALSE, tf_recursive = FALSE){
 
   # Create a list of all files within the directory folder
   file.names.wl<-basename(list.files(data.path, pattern = c("Pressure","csv$"), recursive = tf_recursive)) #list all csv file names in the folder and subfolders
