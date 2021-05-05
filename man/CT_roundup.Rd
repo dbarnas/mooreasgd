@@ -32,6 +32,8 @@ CT_roundup(
 \item{tf_recursive}{Logical parameter indicating whether to search within folders at the data.path. Default = FALSE}
 
 \item{ct.serial}{Character string containing serial ID for a particular probe.  Used to filter from full dataset before returning final dataframe}
+
+\item{ct.pattern}{Character string or object referencing a character string that identifies CT logger data within the specified file path}
 }
 \value{
 For every imported CT data file, one tidied file with temperature-compensated conductance is exported and returned

@@ -8,14 +8,15 @@
 #' @param data.path Path to the input files
 #' @param output.path Path for the output files
 #' @param ct.serial Character string containing serial ID for a particular probe.  Used to filter from full dataset before returning final dataframe
+#' @param ct.pattern Character string or object referencing a character string that identifies CT logger data within the specified file path
 #' @param tf_write Logical parameter indicating whether to save output files in an output folder. No default.
 #' @param tf_recursive Logical parameter indicating whether to search within folders at the data.path. Default = FALSE
 #' @return For every imported CT data file, one tidied file with temperature-compensated conductance is exported and returned
 #' @export
-CT_roundup<-function(data.path, output.path, ct.serial = FALSE, tf_write, tf_recursive = FALSE){
+CT_roundup<-function(data.path, output.path, ct.pattern, ct.serial = FALSE, tf_write, tf_recursive = FALSE){
 
   # Create a list of all files within the directory folder
-  file.names.Cal<-basename(list.files(data.path, pattern = c("CT", "csv$", recursive = tf_recursive))) #list all csv file names in the folder and subfolders
+  file.names.Cal<-basename(list.files(data.path, pattern = ct.pattern, recursive = tf_recursive)) #list all csv file names in the folder and subfolders
 
   # Create an empty dataframe to store all subsequent tidied df's into
   full_df <- tibble::tibble(
@@ -33,7 +34,7 @@ CT_roundup<-function(data.path, output.path, ct.serial = FALSE, tf_write, tf_rec
   for(i in 1:length(file.names.Cal)) {
     Data_ID<-file.names.Cal[[i]]
 
-    file.names<-basename(list.files(data.path, pattern = c(Data_ID, "csv$", recursive = tf_recursive))) #list all csv file names in the folder and subfolders
+    file.names<-basename(list.files(data.path, pattern = c(Data_ID, "csv$"), recursive = tf_recursive)) #list all csv file names in the folder and subfolders
 
     condCal <- file.names %>%
       purrr::map_dfr(~ readr::read_csv(file.path(data.path, .), skip=1, col_names=T)) # read all csv files at the file path, skipping 1 line of metadata and bind together
