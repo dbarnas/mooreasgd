@@ -15,7 +15,7 @@
 CT_roundup<-function(data.path, output.path, ct.serial = FALSE, tf_write, tf_recursive = FALSE){
 
   # Create a list of all files within the directory folder
-  file.names.Cal<-basename(list.files(data.path, pattern = c("CT","csv$"), recursive = tf_recursive)) #list all csv file names in the folder and subfolders
+  file.names.Cal<-basename(list.files(data.path, pattern = c("CT","csv$"), recursive = F)) #list all csv file names in the folder and subfolders
 
   # Create an empty dataframe to store all subsequent tidied df's into
   full_df <- tibble::tibble(
