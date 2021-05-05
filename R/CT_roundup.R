@@ -15,7 +15,7 @@
 CT_roundup<-function(data.path, output.path, ct.serial = FALSE, tf_write, tf_recursive = FALSE){
 
   # Create a list of all files within the directory folder
-  file.names.Cal<-basename(list.files(data.path, pattern = c("CT","csv"), recursive = F)) #list all csv file names in the folder and subfolders
+  file.names.Cal<-basename(list.files(data.path, pattern = c("CT", "csv$", recursive = tf_recursive))) #list all csv file names in the folder and subfolders
 
   # Create an empty dataframe to store all subsequent tidied df's into
   full_df <- tibble::tibble(
@@ -33,7 +33,7 @@ CT_roundup<-function(data.path, output.path, ct.serial = FALSE, tf_write, tf_rec
   for(i in 1:length(file.names.Cal)) {
     Data_ID<-file.names.Cal[[i]]
 
-    file.names<-basename(list.files(data.path, pattern = c(Data_ID, "csv$"), recursive = tf_recursive)) #list all csv file names in the folder and subfolders
+    file.names<-basename(list.files(data.path, pattern = c(Data_ID, "csv$", recursive = tf_recursive))) #list all csv file names in the folder and subfolders
 
     condCal <- file.names %>%
       purrr::map_dfr(~ readr::read_csv(file.path(data.path, .), skip=1, col_names=T)) # read all csv files at the file path, skipping 1 line of metadata and bind together
