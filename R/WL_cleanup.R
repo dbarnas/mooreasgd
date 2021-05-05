@@ -13,9 +13,9 @@
 #' @export
 WL_cleanup <- function(path, wl_serial, recursive_tf = FALSE) {
 
-  file.names.Cal<-basename(list.files(path, pattern = c(wl_serial,"csv$", recursive = recursive_tf))) #list all csv file names in the folder and subfolders
+  file.names.wl<-basename(list.files(path, pattern = c(wl_serial,"csv$"), recursive = recursive_tf)) #list all csv file names in the folder and subfolders
 
-  depthLog <- file.names.Cal %>%
+  depthLog <- file.names.wl %>%
     purrr::map_dfr(~ readr::read_csv(file.path(path, .), skip=1, col_names=T)) # read all csv files at the file path, skipping 1 line of metadata
 
   depthLog<-depthLog %>%
