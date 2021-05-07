@@ -9,12 +9,12 @@
 #' @param temp Temperature at which electrical conductivity values were logged
 #' @param Abs_pressure Absolute pressure, measured in dbar, used to calculate salinity using the PSS-78 equation.  Default = 10dbar.
 #' @param EC Electrical conductivity logged at time of calibration
-#' @param cal_ref The conductivity calibration solution specific conductance value, uS/cm at 25degC
+#' @param cal.ref The conductivity calibration solution specific conductance value, uS/cm at 25degC
 #' @param startCal Date and time at the start of the calibration
 #' @param endCal Date and time at the end of the calibration
 #' @return The original dataframe with the newly calculated Specific Conductance and calibrated SC values of CT logger data
 #' @export
-CT_one_cal<-function(data, date, cal_ref, EC, temp, Abs_Pressure = 10, startCal, endCal) {
+CT_one_cal<-function(data, date, cal.ref, EC, temp, Abs_Pressure = 10, startCal, endCal) {
 
 
   ############################################################
