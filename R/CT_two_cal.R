@@ -9,8 +9,8 @@
 #' @param temp Temperature at which electrical conductivity values were logged
 #' @param Abs_pressure Absolute pressure, measured in dbar, used to calculate salinity using the PSS-78 equation.  Default = 10dbar.
 #' @param EC Electrical conductivity logged at time of calibration
-#' @param high.calRef The high range conductivity calibration solution specific conductance value, uS/cm at 25degC
-#' @param low.calRef The low range conductivity calibration solution specific conductance value, uS/cm at 25degC
+#' @param high.Ref The high range conductivity calibration solution specific conductance value, uS/cm at 25degC
+#' @param low.Ref The low range conductivity calibration solution specific conductance value, uS/cm at 25degC
 #' @param startHigh Date and time at the start of the high range calibration
 #' @param endHigh Date and time at the end of the high range calibration
 #' @param startLow Date and time at the start of the low range calibration
