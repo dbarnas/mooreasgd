@@ -61,19 +61,19 @@ CT_roundup<-function(data.path, output.path, ct.pattern, ct.serial = FALSE, tf_w
     ############################################################
 
     # https://www.aqion.de/site/112
-    condCal<-condCal %>%
-      dplyr::mutate(A = (1.37023 * (TempInSitu - 20)) + 8.36 * (10^(-4) * ((TempInSitu - 20)^2))) %>%
-      dplyr::mutate(B = 109 + TempInSitu) %>%
-      dplyr::mutate(Sp_Conductance = 0.889 * (10^(A/B)) * E_Conductivity) %>%
-      dplyr::select(-c(A,B)) # remove intermediate columns
-
-    full_df <- full_df %>%
-      dplyr::full_join(condCal) # save your dataframes into a larger df
-
-    if(tf_write == TRUE) {
-      write.csv(condCal, paste0(output.path,'/',Data_ID,'_SpConductance.csv'))
-    }
-  }
+  #   condCal<-condCal %>%
+  #     dplyr::mutate(A = (1.37023 * (TempInSitu - 20)) + 8.36 * (10^(-4) * ((TempInSitu - 20)^2))) %>%
+  #     dplyr::mutate(B = 109 + TempInSitu) %>%
+  #     dplyr::mutate(Sp_Conductance = 0.889 * (10^(A/B)) * E_Conductivity) %>%
+  #     dplyr::select(-c(A,B)) # remove intermediate columns
+  #
+  #   full_df <- full_df %>%
+  #     dplyr::full_join(condCal) # save your dataframes into a larger df
+  #
+  #   if(tf_write == TRUE) {
+  #     write.csv(condCal, paste0(output.path,'/',Data_ID,'_SpConductance.csv'))
+  #   }
+   }
 
   if(ct.serial!=FALSE) {
     pattern <- grep(x = full_df$List.ID, pattern = ct.serial, value = TRUE)
