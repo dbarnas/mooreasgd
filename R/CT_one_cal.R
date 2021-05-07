@@ -3,37 +3,47 @@
 #' This function reads in a dataframe containing electrical conductivity logs from a conductivity-temperature logger
 #' and calculates specific conductance from in situ electrical conductivity and temperature readings.
 #'
-#' Nonlinear temperature compensation is calculated using the EC to SC equation from
-#' https://www.aqion.de/site/112
 #'
 #' @param data The dataframe containing raw Electrical Conductivity values
-#' @param date Date column used to filter for calibration data only
-#' @param temp Temperature column used to calculate specific conductance from electrical conductivity
-#' @param EC Electrical conductivity column used to calculate specific conductance
-#' @param cal_reference The conductivity calibration solution specific conductance value, uS/cm at 25degC
+#' @param date Date and time column used to filter out calibration times
+#' @param temp Temperature at which electrical conductivity values were logged
+#' @param Abs_pressure Absolute pressure, measured in dbar, used to calculate salinity using the PSS-78 equation.  Default = 10dbar.
+#' @param EC Electrical conductivity logged at time of calibration
+#' @param cal_ref The conductivity calibration solution specific conductance value, uS/cm at 25degC
 #' @param startCal Date and time at the start of the calibration
 #' @param endCal Date and time at the end of the calibration
 #' @return The original dataframe with the newly calculated Specific Conductance and calibrated SC values of CT logger data
 #' @export
-CT_one_cal<-function(data, date, temp, EC, cal_reference, startCal, endCal) {
+CT_one_cal<-function(data, date, cal_ref, EC, temp, Abs_Pressure = 10, startCal, endCal) {
 
 
   ############################################################
   ### One Point Calibration
   ############################################################
 
+  # mean temperature at calibration
+  mean.temp<-data %>%
+    filter(between({{date}}, {{startCal}}, {{endCal}})) %>%
+    summarise(mean = mean({{temp}})) %>%
+    as.numeric()
+
+  # use mean temperature of calibrations with PSS-78 and gsw package
+  # Get EC of conductivity standard at logged temperature to calibrate logged EC readings
+  cal.sp<-gsw_SP_from_C(C = cal.ref*0.001, t = mean.temp, p = Abs_pressure)
+  cal.ref<-1000*gsw_C_from_SP(SP = cal.sp, t = 25, p = Abs_pressure)
+
   # Logger data in pre-deployment calibration
-  Cal.Log<-data%>%
+  mean.ec<-data%>%
     filter(between({{date}},{{startCal}},{{endCal}}))%>%
-    summarise(mean({{Sp_Conductance}}))%>%
+    summarise(mean = mean({{EC}}))%>%
     as.numeric
 
   # Offset between the calibration reference and the logger reading
-  offset<-cal_reference-Cal.Log
+  offset<-cal.ref - mean.ec
 
   # Apply offset to logger data
   data<-data%>%
-    mutate(Sp_Conductance_cal=Sp_Conductance+offset)
+    mutate(EC_Cal = {{EC}} + offset)
 
   return(data)
 }
