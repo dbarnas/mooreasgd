@@ -67,8 +67,8 @@ CT_roundup<-function(data.path, output.path, ct.pattern, ct.serial = FALSE, tf_w
   #     dplyr::mutate(Sp_Conductance = 0.889 * (10^(A/B)) * E_Conductivity) %>%
   #     dplyr::select(-c(A,B)) # remove intermediate columns
   #
-  #   full_df <- full_df %>%
-  #     dplyr::full_join(condCal) # save your dataframes into a larger df
+    full_df <- full_df %>%
+      dplyr::full_join(condCal) # save your dataframes into a larger df
   #
   #   if(tf_write == TRUE) {
   #     write.csv(condCal, paste0(output.path,'/',Data_ID,'_SpConductance.csv'))
@@ -82,7 +82,6 @@ CT_roundup<-function(data.path, output.path, ct.pattern, ct.serial = FALSE, tf_w
   }
 
   full_df <- full_df %>%
-    rbind(condCal) %>%
     rename(Serial = List.ID)
 
   return(full_df) # return a list of dataframes
