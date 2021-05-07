@@ -37,10 +37,10 @@ CT_two_cal<-function(data, date, temp, Abs_pressure = 10, EC, high.Ref, low.Ref,
   # use mean temperature of calibrations with PSS-78 and gsw package
   # Get EC of conductivity standard at logged temperature to calibrate logged EC readings
   highCal.sp<-gsw_SP_from_C(C = high.Ref*0.001, t = 25, p = Abs_pressure)
-  highCal<-1000*gsw_C_from_SP(SP = highCal.sp, t = {{temp}}, p = Abs_pressure)
+  highCal<-1000*gsw_C_from_SP(SP = highCal.sp, t = high.mean.temp, p = Abs_pressure)
 
   lowCal.sp<-gsw_SP_from_C(C = low.Ref*0.001, t = 25, p = Abs_pressure)
-  lowCal<-1000*gsw_C_from_SP(SP = lowCal.sp, t = {{temp}}, p = Abs_pressure)
+  lowCal<-1000*gsw_C_from_SP(SP = lowCal.sp, t = low.mean.temp, p = Abs_pressure)
 
 
     # mean EC at calibration interval
