@@ -82,6 +82,7 @@ CT_roundup<-function(data.path, output.path, ct.pattern, ct.serial = FALSE, tf_w
   }
 
   full_df <- full_df %>%
+    rbind(condCal) %>%
     rename(Serial = List.ID)
 
   return(full_df) # return a list of dataframes
