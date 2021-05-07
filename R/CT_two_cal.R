@@ -57,7 +57,7 @@ CT_two_cal<-function(data, high.Ref, low.Ref, startHigh, endHigh, startLow, endL
     rawRange<-rawHigh - rawLow
     refRange<-highCal - lowCal
 
-    date<-date %>%
+    data<-data %>%
       mutate(EC_Cal = ((({{EC}} - rawLow) * refRange) / rawRange) + lowCal)
 
 
