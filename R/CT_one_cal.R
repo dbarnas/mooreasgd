@@ -14,7 +14,7 @@
 #' @param endCal Date and time at the end of the calibration
 #' @return The original dataframe with the newly calculated Specific Conductance and calibrated SC values of CT logger data
 #' @export
-CT_one_cal<-function(data, date, cal.ref, EC, temp, Abs_Pressure = 10, startCal, endCal) {
+CT_one_cal<-function(data, date, cal.ref, EC, temp, Abs_pressure = 10, startCal, endCal) {
 
 
   ############################################################
@@ -29,8 +29,8 @@ CT_one_cal<-function(data, date, cal.ref, EC, temp, Abs_Pressure = 10, startCal,
 
   # use mean temperature of calibrations with PSS-78 and gsw package
   # Get EC of conductivity standard at logged temperature to calibrate logged EC readings
-  cal.sp<-gsw_SP_from_C(C = cal.ref*0.001, t = mean.temp, p = Abs_pressure)
-  cal.ref<-1000*gsw_C_from_SP(SP = cal.sp, t = 25, p = Abs_pressure)
+  cal.sp<-gsw_SP_from_C(C = cal.ref*0.001, t = 25, p = Abs_pressure)
+  cal.ref<-1000*gsw_C_from_SP(SP = cal.sp, t = TempInSitu, p = Abs_pressure)
 
   # Logger data in pre-deployment calibration
   mean.ec<-data%>%

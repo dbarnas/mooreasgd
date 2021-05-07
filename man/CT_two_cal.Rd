@@ -6,20 +6,28 @@
 \usage{
 CT_two_cal(
   data,
+  date,
+  temp,
+  Abs_pressure = 10,
+  EC,
   high.Ref,
   low.Ref,
   startHigh,
   endHigh,
   startLow,
-  endLow,
-  date,
-  temp,
-  Abs_pressure = 10,
-  EC
+  endLow
 )
 }
 \arguments{
 \item{data}{The dataframe containing raw Electrical Conductivity values}
+
+\item{date}{Date and time column used to filter out calibration times}
+
+\item{temp}{Temperature at which electrical conductivity values were logged}
+
+\item{Abs_pressure}{Absolute pressure, measured in dbar, used to calculate salinity using the PSS-78 equation.  Default = 10dbar.}
+
+\item{EC}{Electrical conductivity logged at time of calibration}
 
 \item{high.Ref}{The high range conductivity calibration solution specific conductance value, uS/cm at 25degC}
 
@@ -32,14 +40,6 @@ CT_two_cal(
 \item{startLow}{Date and time at the start of the low range calibration}
 
 \item{endLow}{Date and time at the end of the low range calibration}
-
-\item{date}{Date and time column used to filter out calibration times}
-
-\item{temp}{Temperature at which electrical conductivity values were logged}
-
-\item{Abs_pressure}{Absolute pressure, measured in dbar, used to calculate salinity using the PSS-78 equation.  Default = 10dbar.}
-
-\item{EC}{Electrical conductivity logged at time of calibration}
 }
 \value{
 The original dataframe with the calibrated Electrical Conductivity values of CT logger data

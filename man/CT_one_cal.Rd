@@ -4,7 +4,7 @@
 \alias{CT_one_cal}
 \title{Calculate temperature-compensated Specific Conductance and one-point calibration for CT logger data}
 \usage{
-CT_one_cal(data, date, cal.ref, EC, temp, Abs_Pressure = 10, startCal, endCal)
+CT_one_cal(data, date, cal.ref, EC, temp, Abs_pressure = 10, startCal, endCal)
 }
 \arguments{
 \item{data}{The dataframe containing raw Electrical Conductivity values}
@@ -17,11 +17,11 @@ CT_one_cal(data, date, cal.ref, EC, temp, Abs_Pressure = 10, startCal, endCal)
 
 \item{temp}{Temperature at which electrical conductivity values were logged}
 
+\item{Abs_pressure}{Absolute pressure, measured in dbar, used to calculate salinity using the PSS-78 equation.  Default = 10dbar.}
+
 \item{startCal}{Date and time at the start of the calibration}
 
 \item{endCal}{Date and time at the end of the calibration}
-
-\item{Abs_pressure}{Absolute pressure, measured in dbar, used to calculate salinity using the PSS-78 equation.  Default = 10dbar.}
 }
 \value{
 The original dataframe with the newly calculated Specific Conductance and calibrated SC values of CT logger data
