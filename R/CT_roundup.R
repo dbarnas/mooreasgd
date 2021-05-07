@@ -23,8 +23,8 @@ CT_roundup<-function(data.path, output.path, ct.pattern, ct.serial = FALSE, tf_w
     date = as_datetime(NA),
     List.ID = as.character(),
     TempInSitu = as.numeric(),
-    E_Conductivity = as.numeric(),
-    Sp_Conductance = as.numeric())
+    E_Conductivity = as.numeric())#,
+   # Sp_Conductance = as.numeric())
 
   # For each listed file:
   ## Load the dataframe,
