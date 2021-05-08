@@ -4,10 +4,20 @@
 \alias{WL_cleanup}
 \title{Clean up raw depth data file from the HOBO water level Logger}
 \usage{
-WL_cleanup(path, wl_serial, recursive_tf = FALSE)
+WL_cleanup(
+  path,
+  wl_serial,
+  output.path,
+  tf_write = FALSE,
+  recursive_tf = FALSE
+)
 }
 \arguments{
 \item{path}{Path to the input files}
+
+\item{output.path}{Path for the output files}
+
+\item{tf_write}{Logical parameter indicating whether to save output files in an output folder. No default.}
 
 \item{recursive_tf}{Logical parameter indicating whether to search within folders at the file path. Default = FALSE}
 

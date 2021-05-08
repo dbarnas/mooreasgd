@@ -14,6 +14,8 @@ CT_cleanup(path, ct_serial, tf_write = FALSE, recursive_tf = FALSE)
 \item{tf_write}{Logical parameter indicating whether to save output files in an output folder. No default.}
 
 \item{recursive_tf}{Logical parameter indicating whether to search within folders at the file path. Default = FALSE}
+
+\item{output.path}{Path for the output files}
 }
 \value{
 A cleaned dataframe of CT logger data

@@ -7,6 +7,7 @@
 #' Any rows containing NA's are dropped.
 #'
 #' @param path Path to the input files
+#' @param output.path Path for the output files
 #' @param ct_serial Logger serial number used in naming the input file
 #' @param tf_write Logical parameter indicating whether to save output files in an output folder. No default.
 #' @param recursive_tf Logical parameter indicating whether to search within folders at the file path. Default = FALSE
@@ -49,7 +50,7 @@ CT_cleanup <- function(path, ct_serial, tf_write = FALSE, recursive_tf = FALSE) 
 
   # conditional write.csv at output path
   if(tf_write == TRUE) {
-    write.csv(condCal, paste0(output.path,'/',Data_ID,'_tidy.csv'))
+    write.csv(condCal, paste0(output.path,'/CT_',ct_serial,'_tidy.csv'))
   }
 
   return(condCal) # return dataframe

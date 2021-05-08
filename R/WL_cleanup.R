@@ -7,11 +7,13 @@
 #' Any rows containing NA's are dropped.
 #'
 #' @param path Path to the input files
+#' @param output.path Path for the output files
 #' @param WL_serial Logger serial number used in naming the input file
+#' @param tf_write Logical parameter indicating whether to save output files in an output folder. No default.
 #' @param recursive_tf Logical parameter indicating whether to search within folders at the file path. Default = FALSE
 #' @return A cleaned dataframe of pH logger data
 #' @export
-WL_cleanup <- function(path, wl_serial, recursive_tf = FALSE) {
+WL_cleanup <- function(path, wl_serial, output.path, tf_write = FALSE, recursive_tf = FALSE) {
 
   file.names.wl<-basename(list.files(path, pattern = c(wl_serial,"csv$"), recursive = recursive_tf)) #list all csv file names in the folder and subfolders
 
@@ -25,13 +27,19 @@ WL_cleanup <- function(path, wl_serial, recursive_tf = FALSE) {
                   TempInSitu=contains("Temp"),
                   AbsPressure=contains("Abs Pres"),
                   Depth=contains("Water Level")) %>%
-    tidyr::drop_na()
+    tidyr::drop_na() %>%
+    dplyr::mutate(date = lubridate::mdy_hms(date))
 
-  depthLog$date <- depthLog$date %>%
-    readr::parse_datetime(format = "%m/%d/%y %H:%M:%S %p", # Convert 'date' to date and time vector type
-                          na = character(),
-                          locale = default_locale(),
-                          trim_ws = TRUE)
+  # depthLog$date <- depthLog$date %>%
+  #   readr::parse_datetime(format = "%m/%d/%y %H:%M:%S %p", # Convert 'date' to date and time vector type
+  #                         na = character(),
+  #                         locale = default_locale(),
+  #                         trim_ws = TRUE)
+
+  # conditional write.csv at output path
+  if(tf_write == TRUE) {
+    write.csv(depthLog, paste0(output.path,'/Pressure_',wl_serial,'_tidy.csv'))
+  }
 
   return(depthLog)
 }
