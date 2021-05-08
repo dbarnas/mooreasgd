@@ -26,11 +26,13 @@ CT_two_cal<-function(data, date, temp, EC, high.Ref, low.Ref, startHigh, endHigh
   # mean temperature at calibration intervals
   high.mean.temp<-data %>%
     dplyr::filter(dplyr::between({{date}}, {{startHigh}}, {{endHigh}})) %>%
-    dplyr::summarise(mean = mean({{temp}})) %>%
+    dplyr::rename(TempInSitu = temp) %>%
+    dplyr::summarise(mean = mean(TempInSitu)) %>%
     as.numeric()
   low.mean.temp<-data %>%
     dplyr::filter(dplyr::between({{date}}, {{startLow}}, {{endLow}})) %>%
-    dplyr::summarise(mean = mean({{temp}})) %>%
+    dplyr::rename(TempInSitu = temp) %>%
+    dplyr::summarise(mean = mean(TempInSitu)) %>%
     as.numeric()
 
   # use mean temperature of calibrations with PSS-78 and gsw package
@@ -45,11 +47,13 @@ CT_two_cal<-function(data, date, temp, EC, high.Ref, low.Ref, startHigh, endHigh
   # mean EC at calibration interval
   rawHigh<-data %>%
     dplyr::filter(dplyr::between({{date}}, {{startHigh}}, {{endHigh}})) %>%
-    dplyr::summarise(mean = mean({{EC}})) %>%
+    dplyr::rename(EC = EC) %>%
+    dplyr::summarise(mean = mean(EC)) %>%
     as.numeric()
   rawLow<-data %>%
     dplyr::filter(dplyr::between({{date}}, {{startLow}}, {{endLow}})) %>%
-    dplyr::summarise(mean = mean({{EC}})) %>%
+    dplyr::rename(EC = EC) %>%
+    dplyr::summarise(mean = mean(EC)) %>%
     as.numeric()
 
   # calibration
@@ -57,7 +61,7 @@ CT_two_cal<-function(data, date, temp, EC, high.Ref, low.Ref, startHigh, endHigh
   refRange<-highCal - lowCal
 
   data<-data %>%
-    dplyr::mutate(EC_Cal = ((({{EC}} - rawLow) * refRange) / rawRange) + lowCal)
+    dplyr::mutate(EC_Cal = (((EC - rawLow) * refRange) / rawRange) + lowCal)
 
 
   return(data)

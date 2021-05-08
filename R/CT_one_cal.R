@@ -24,7 +24,8 @@ CT_one_cal<-function(data, date, cal.ref, EC, temp, Abs_pressure = 10, startCal,
   # mean temperature at calibration
   mean.temp<-data %>%
     dplyr::filter(dplyr::between({{date}}, {{startCal}}, {{endCal}})) %>%
-    dplyr::summarise(mean = mean({{temp}})) %>%
+    dplyr::rename(TempInSitu = temp) %>%
+    dplyr::summarise(mean = mean(TempInSitu)) %>%
     as.numeric()
 
   # use mean temperature of calibrations with PSS-78 and gsw package
@@ -35,7 +36,8 @@ CT_one_cal<-function(data, date, cal.ref, EC, temp, Abs_pressure = 10, startCal,
   # Logger data in pre-deployment calibration
   mean.ec<-data%>%
     dplyr::filter(dplyr::between({{date}},{{startCal}},{{endCal}}))%>%
-    dplyr::summarise(mean = mean({{EC}}))%>%
+    dplyr::rename(EC = EC) %>%
+    dplyr::summarise(mean = mean(EC)) %>%
     as.numeric
 
   # Offset between the calibration reference and the logger reading
@@ -43,7 +45,7 @@ CT_one_cal<-function(data, date, cal.ref, EC, temp, Abs_pressure = 10, startCal,
 
   # Apply offset to logger data
   data<-data%>%
-    dplyr::mutate(EC_Cal = {{EC}} + offset)
+    dplyr::mutate(EC_Cal = EC + offset)
 
   return(data)
 }
