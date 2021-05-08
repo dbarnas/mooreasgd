@@ -15,14 +15,14 @@
 #' @export
 WL_cleanup <- function(data.path, wl.serial, output.path, tf_write = FALSE, recursive_tf = FALSE) {
 
-  file.names.wl<-basename(list.files(path, pattern = c(wl_serial,"csv$"), recursive = recursive_tf)) #list all csv file names in the folder and subfolders
+  file.names.wl<-basename(list.files(data.path, pattern = c(wl.serial,"csv$"), recursive = recursive_tf)) #list all csv file names in the folder and subfolders
 
   depthLog <- file.names.wl %>%
-    purrr::map_dfr(~ readr::read_csv(file.path(path, .), skip=1, col_names=T)) # read all csv files at the file path, skipping 1 line of metadata
+    purrr::map_dfr(~ readr::read_csv(file.path(data.path, .), skip=1, col_names=T)) # read all csv files at the file path, skipping 1 line of metadata
 
   depthLog<-depthLog %>%
-    dplyr::select(contains('Date'), contains(wl_serial), contains("Temp"),contains("Abs Pres"), contains("Water Level")) %>% # Filter specified probe by Serial number
-    dplyr::mutate(Serial=paste0("WL_",wl_serial)) %>% # add column for CT serial number
+    dplyr::select(contains('Date'), contains(wl.serial), contains("Temp"),contains("Abs Pres"), contains("Water Level")) %>% # Filter specified probe by Serial number
+    dplyr::mutate(Serial=paste0("WL_",wl.serial)) %>% # add column for CT serial number
     dplyr::rename(date=contains("Date"),
                   TempInSitu=contains("Temp"),
                   AbsPressure=contains("Abs Pres"),
@@ -39,7 +39,7 @@ WL_cleanup <- function(data.path, wl.serial, output.path, tf_write = FALSE, recu
 
   # conditional write.csv at output path
   if(tf_write == TRUE) {
-    write.csv(depthLog, paste0(output.path,'/Pressure_',wl_serial,'_tidy.csv'))
+    write.csv(depthLog, paste0(output.path,'/Pressure_',wl.serial,'_tidy.csv'))
   }
 
   return(depthLog)

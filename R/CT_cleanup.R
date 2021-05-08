@@ -15,14 +15,14 @@
 #' @export
 CT_cleanup <- function(data.path, ct.serial, tf_write = FALSE, recursive_tf = FALSE) {
 
-  file.names.Cal<-basename(list.files(path, pattern = c(ct_serial,"csv$", recursive = recursive_tf))) #list all csv file names in the folder and subfolders
+  file.names.Cal<-basename(list.files(data.path, pattern = c(ct.serial,"csv$", recursive = recursive_tf))) #list all csv file names in the folder and subfolders
 
   condCal <- file.names.Cal %>%
-    purrr::map_dfr(~ readr::read_csv(file.path(path, .), skip=1, col_names=T)) # read all csv files at the file path, skipping 1 line of metadata
+    purrr::map_dfr(~ readr::read_csv(file.path(data.path, .), skip=1, col_names=T)) # read all csv files at the file path, skipping 1 line of metadata
 
   condCal<-condCal %>%
-    dplyr::select(contains('Date'), contains(ct_serial), contains("High Range"), contains("Temp")) %>% # Filter specified probe by Serial number
-    dplyr::mutate(Serial=paste0("CT_",ct_serial)) %>% # add column for CT serial number
+    dplyr::select(contains('Date'), contains(ct.serial), contains("High Range"), contains("Temp")) %>% # Filter specified probe by Serial number
+    dplyr::mutate(Serial=paste0("CT_",ct.serial)) %>% # add column for CT serial number
     dplyr::rename(date=contains("Date"),
                   TempInSitu=contains("Temp"),
                   E_Conductivity=contains("High Range")) %>%
@@ -50,7 +50,7 @@ CT_cleanup <- function(data.path, ct.serial, tf_write = FALSE, recursive_tf = FA
 
   # conditional write.csv at output path
   if(tf_write == TRUE) {
-    write.csv(condCal, paste0(output.path,'/CT_',ct_serial,'_tidy.csv'))
+    write.csv(condCal, paste0(output.path,'/CT_',ct.serial,'_tidy.csv'))
   }
 
   return(condCal) # return dataframe
