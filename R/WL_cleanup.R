@@ -28,7 +28,8 @@ WL_cleanup <- function(path, wl_serial, output.path, tf_write = FALSE, recursive
                   AbsPressure=contains("Abs Pres"),
                   Depth=contains("Water Level")) %>%
     tidyr::drop_na() %>%
-    dplyr::mutate(date = lubridate::mdy_hms(date))
+    dplyr::mutate(date = lubridate::mdy_hms(date),
+                  Pres_dbar = AbsPressure / 10) # Absolute Pressure recorded in kPa. 1 kPa = 10dbar
 
   # depthLog$date <- depthLog$date %>%
   #   readr::parse_datetime(format = "%m/%d/%y %H:%M:%S %p", # Convert 'date' to date and time vector type
