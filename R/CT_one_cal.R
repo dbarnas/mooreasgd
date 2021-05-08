@@ -23,19 +23,19 @@ CT_one_cal<-function(data, date, cal.ref, EC, temp, Abs_pressure = 10, startCal,
 
   # mean temperature at calibration
   mean.temp<-data %>%
-    filter(between({{date}}, {{startCal}}, {{endCal}})) %>%
-    summarise(mean = mean({{temp}})) %>%
+    dplyr::filter(dplyr::between({{date}}, {{startCal}}, {{endCal}})) %>%
+    dplyr::summarise(mean = mean({{temp}})) %>%
     as.numeric()
 
   # use mean temperature of calibrations with PSS-78 and gsw package
   # Get EC of conductivity standard at logged temperature to calibrate logged EC readings
-  cal.sp<-gsw_SP_from_C(C = cal.ref*0.001, t = 25, p = Abs_pressure)
-  cal.ref<-1000*gsw_C_from_SP(SP = cal.sp, t = {{temp}}, p = Abs_pressure)
+  cal.sp<-gsw::gsw_SP_from_C(C = cal.ref*0.001, t = 25, p = Abs_pressure)
+  cal.ref<-1000*gsw::gsw_C_from_SP(SP = cal.sp, t = {{temp}}, p = Abs_pressure)
 
   # Logger data in pre-deployment calibration
   mean.ec<-data%>%
-    filter(between({{date}},{{startCal}},{{endCal}}))%>%
-    summarise(mean = mean({{EC}}))%>%
+    dplyr::filter(dplyr::between({{date}},{{startCal}},{{endCal}}))%>%
+    dplyr::summarise(mean = mean({{EC}}))%>%
     as.numeric
 
   # Offset between the calibration reference and the logger reading
@@ -43,7 +43,7 @@ CT_one_cal<-function(data, date, cal.ref, EC, temp, Abs_pressure = 10, startCal,
 
   # Apply offset to logger data
   data<-data%>%
-    mutate(EC_Cal = {{EC}} + offset)
+    dplyr::mutate(EC_Cal = {{EC}} + offset)
 
   return(data)
 }

@@ -8,7 +8,6 @@ CT_two_cal(
   data,
   date,
   temp,
-  Abs_pressure = 10,
   EC,
   high.Ref,
   low.Ref,
@@ -24,8 +23,6 @@ CT_two_cal(
 \item{date}{Date and time column used to filter out calibration times}
 
 \item{temp}{Temperature at which electrical conductivity values were logged}
-
-\item{Abs_pressure}{Absolute pressure, measured in dbar, used to calculate salinity using the PSS-78 equation.  Default = 10dbar.}
 
 \item{EC}{Electrical conductivity logged at time of calibration}
 
