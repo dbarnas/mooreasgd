@@ -6,6 +6,8 @@
 #'
 #' @param data The dataframe containing raw Electrical Conductivity values
 #' @param date Date and time column used to filter out calibration times
+#' @param temp Temperature at which electrical conductivity values were logged
+#' @param EC Electrical conductivity logged at time of calibration
 #' @param high.Ref The high range conductivity calibration solution specific conductance value, uS/cm at 25degC
 #' @param low.Ref The low range conductivity calibration solution specific conductance value, uS/cm at 25degC
 #' @param startHigh Date and time at the start of the high range calibration
@@ -24,12 +26,12 @@ CT_two_cal<-function(data, date, high.Ref, low.Ref, startHigh, endHigh, startLow
   # mean temperature at calibration intervals
   high.mean.temp<-data %>%
     dplyr::filter(dplyr::between({{date}}, {{startHigh}}, {{endHigh}})) %>%
-    dplyr::rename(TempInSitu = contains("temp") | contains("Temp")) %>%
+    dplyr::rename(TempInSitu = {{temp}}) %>%
     dplyr::summarise(mean = mean(TempInSitu)) %>%
     as.numeric()
   low.mean.temp<-data %>%
     dplyr::filter(dplyr::between({{date}}, {{startLow}}, {{endLow}})) %>%
-    dplyr::rename(TempInSitu = contains("temp") | contains("Temp")) %>%
+    dplyr::rename(TempInSitu = {{temp}}) %>%
     dplyr::summarise(mean = mean(TempInSitu)) %>%
     as.numeric()
 
@@ -45,12 +47,12 @@ CT_two_cal<-function(data, date, high.Ref, low.Ref, startHigh, endHigh, startLow
   # mean EC at calibration interval
   rawHigh<-data %>%
     dplyr::filter(dplyr::between({{date}}, {{startHigh}}, {{endHigh}})) %>%
-    dplyr::rename(EC = contains("EC") | contains("E_C")) %>%
+    dplyr::rename(EC = {{EC}}) %>%
     dplyr::summarise(mean = mean(EC)) %>%
     as.numeric()
   rawLow<-data %>%
     dplyr::filter(dplyr::between({{date}}, {{startLow}}, {{endLow}})) %>%
-    dplyr::rename(EC = contains("EC") | contains("E_C")) %>%
+    dplyr::rename(EC = {{EC}}) %>%
     dplyr::summarise(mean = mean(EC)) %>%
     as.numeric()
 

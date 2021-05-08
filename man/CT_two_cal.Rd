@@ -22,6 +22,10 @@ CT_two_cal(data, date, high.Ref, low.Ref, startHigh, endHigh, startLow, endLow)
 \item{startLow}{Date and time at the start of the low range calibration}
 
 \item{endLow}{Date and time at the end of the low range calibration}
+
+\item{temp}{Temperature at which electrical conductivity values were logged}
+
+\item{EC}{Electrical conductivity logged at time of calibration}
 }
 \value{
 The original dataframe with the calibrated Electrical Conductivity values of CT logger data
