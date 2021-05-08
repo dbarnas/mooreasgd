@@ -37,7 +37,7 @@ CT_one_cal<-function(data, date, temp, EC, cal.ref, startCal, endCal) {
     dplyr::filter(dplyr::between({{date}},{{startCal}},{{endCal}}))%>%
     dplyr::rename(EC = {{EC}}) %>%
     dplyr::summarise(mean = mean(EC)) %>%
-    as.numeric
+    as.numeric()
 
   # Offset between the calibration reference and the logger reading
   offset<-cal.ref - mean.ec
