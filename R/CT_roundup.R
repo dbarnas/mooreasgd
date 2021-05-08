@@ -13,7 +13,7 @@
 #' @param tf_recursive Logical parameter indicating whether to search within folders at the data.path. Default = FALSE
 #' @return For every imported CT data file, one tidied file with temperature-compensated conductance is exported and returned
 #' @export
-CT_roundup<-function(data.path, output.path, ct.pattern, ct.serial = FALSE, tf_write, tf_recursive = FALSE){
+CT_roundup<-function(data.path, output.path, ct.pattern, ct.serial = FALSE, tf_write = FALSE, tf_recursive = FALSE){
 
   # Create a list of all files within the directory folder
   file.names.Cal<-basename(list.files(data.path, pattern = ct.pattern, recursive = tf_recursive)) #list all csv file names in the folder and subfolders
@@ -23,8 +23,7 @@ CT_roundup<-function(data.path, output.path, ct.pattern, ct.serial = FALSE, tf_w
     date = as_datetime(NA),
     List.ID = as.character(),
     TempInSitu = as.numeric(),
-    E_Conductivity = as.numeric())#,
-   # Sp_Conductance = as.numeric())
+    E_Conductivity = as.numeric())
 
   # For each listed file:
   ## Load the dataframe,
@@ -67,18 +66,20 @@ CT_roundup<-function(data.path, output.path, ct.pattern, ct.serial = FALSE, tf_w
   #     dplyr::mutate(Sp_Conductance = 0.889 * (10^(A/B)) * E_Conductivity) %>%
   #     dplyr::select(-c(A,B)) # remove intermediate columns
   #
+
     full_df <- full_df %>%
       dplyr::full_join(condCal) # save your dataframes into a larger df
-  #
-  #   if(tf_write == TRUE) {
-  #     write.csv(condCal, paste0(output.path,'/',Data_ID,'_SpConductance.csv'))
-  #   }
+
+    # conditional write.csv at output path
+    if(tf_write == TRUE) {
+      write.csv(condCal, paste0(output.path,'/',Data_ID,'_tidy.csv'))
+    }
    }
 
+  # if CT serial number is specified, only return data associated with that serial
   if(ct.serial!=FALSE) {
-    pattern <- grep(x = full_df$List.ID, pattern = ct.serial, value = TRUE)
     full_df <- full_df %>%
-      dplyr::filter(List.ID == pattern[2])
+      dplyr::filter(List.ID == stringr::str_subset(full_df$List.ID, pattern = sn))
   }
 
   full_df <- full_df %>%

@@ -9,7 +9,7 @@ CT_roundup(
   output.path,
   ct.pattern,
   ct.serial = FALSE,
-  tf_write,
+  tf_write = FALSE,
   tf_recursive = FALSE
 )
 }
