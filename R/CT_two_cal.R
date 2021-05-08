@@ -26,11 +26,11 @@ CT_two_cal<-function(data, date, temp, Abs_pressure = 10, EC, high.Ref, low.Ref,
 
   # mean temperature at calibration intervals
   high.mean.temp<-data %>%
-    filter(between({{date}}, {{startHigh}}, {{endHigh}})) %>%
+    filter(between({{date}}, startHigh, endHigh)) %>%
     summarise(mean = mean({{temp}})) %>%
     as.numeric()
   low.mean.temp<-data %>%
-    filter(between({{date}}, {{startLow}}, {{endLow}})) %>%
+    filter(between({{date}}, startLow, endLow)) %>%
     summarise(mean = mean({{temp}})) %>%
     as.numeric()
 
@@ -45,11 +45,11 @@ CT_two_cal<-function(data, date, temp, Abs_pressure = 10, EC, high.Ref, low.Ref,
 
     # mean EC at calibration interval
     rawHigh<-data %>%
-      filter(between({{date}}, {{startHigh}}, {{endHigh}})) %>%
+      filter(between({{date}}, startHigh, endHigh)) %>%
       summarise(mean = mean({{EC}})) %>%
       as.numeric()
     rawLow<-data %>%
-      filter(between({{date}}, {{startLow}}, {{endLow}})) %>%
+      filter(between({{date}}, startLow, endLow)) %>%
       summarise(mean = mean({{EC}})) %>%
       as.numeric()
 
