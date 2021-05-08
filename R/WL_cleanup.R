@@ -6,14 +6,14 @@
 #' Unnecessary columns are removed, and the remaining columns are renamed as needed for simplicity and consistency.
 #' Any rows containing NA's are dropped.
 #'
-#' @param path Path to the input files
+#' @param data.path Path to the input files
 #' @param output.path Path for the output files
-#' @param WL_serial Logger serial number used in naming the input file
+#' @param wl.serial Logger serial number used in naming the input file
 #' @param tf_write Logical parameter indicating whether to save output files in an output folder. No default.
 #' @param recursive_tf Logical parameter indicating whether to search within folders at the file path. Default = FALSE
 #' @return A cleaned dataframe of pH logger data
 #' @export
-WL_cleanup <- function(path, wl_serial, output.path, tf_write = FALSE, recursive_tf = FALSE) {
+WL_cleanup <- function(data.path, wl.serial, output.path, tf_write = FALSE, recursive_tf = FALSE) {
 
   file.names.wl<-basename(list.files(path, pattern = c(wl_serial,"csv$"), recursive = recursive_tf)) #list all csv file names in the folder and subfolders
 

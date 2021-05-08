@@ -4,12 +4,12 @@
 \alias{CT_cleanup}
 \title{Clean up raw conductivity-temperature, CT, data file from the HOBO CT Logger}
 \usage{
-CT_cleanup(path, ct_serial, tf_write = FALSE, recursive_tf = FALSE)
+CT_cleanup(data.path, ct.serial, tf_write = FALSE, recursive_tf = FALSE)
 }
 \arguments{
-\item{path}{Path to the input files}
+\item{data.path}{Path to the input files}
 
-\item{ct_serial}{Logger serial number used in naming the input file}
+\item{ct.serial}{Logger serial number used in naming the input file}
 
 \item{tf_write}{Logical parameter indicating whether to save output files in an output folder. No default.}
 
