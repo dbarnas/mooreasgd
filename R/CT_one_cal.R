@@ -13,7 +13,7 @@
 #' @param endCal Date and time at the end of the calibration
 #' @return The original dataframe with the newly calculated Specific Conductance and calibrated SC values of CT logger data
 #' @export
-CT_one_cal<-function(data, date, cal.ref, EC, temp, startCal, endCal) {
+CT_one_cal<-function(data, date, temp, EC, cal.ref, startCal, endCal) {
 
 
   ############################################################

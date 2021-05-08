@@ -16,7 +16,7 @@
 #' @param endLow Date and time at the end of the low range calibration
 #' @return The original dataframe with the calibrated Electrical Conductivity values of CT logger data
 #' @export
-CT_two_cal<-function(data, date, high.Ref, low.Ref, startHigh, endHigh, startLow, endLow) {
+CT_two_cal<-function(data, date,temp, EC, high.Ref, low.Ref, startHigh, endHigh, startLow, endLow) {
 
 
   ############################################################

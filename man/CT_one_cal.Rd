@@ -4,18 +4,18 @@
 \alias{CT_one_cal}
 \title{Calculate temperature-compensated Specific Conductance and one-point calibration for CT logger data}
 \usage{
-CT_one_cal(data, date, cal.ref, EC, temp, startCal, endCal)
+CT_one_cal(data, date, temp, EC, cal.ref, startCal, endCal)
 }
 \arguments{
 \item{data}{The dataframe containing raw Electrical Conductivity values}
 
 \item{date}{Date and time column used to filter out calibration times}
 
-\item{cal.ref}{The conductivity calibration solution specific conductance value, uS/cm at 25degC}
+\item{temp}{Temperature at which electrical conductivity values were logged}
 
 \item{EC}{Electrical conductivity logged at time of calibration}
 
-\item{temp}{Temperature at which electrical conductivity values were logged}
+\item{cal.ref}{The conductivity calibration solution specific conductance value, uS/cm at 25degC}
 
 \item{startCal}{Date and time at the start of the calibration}
 

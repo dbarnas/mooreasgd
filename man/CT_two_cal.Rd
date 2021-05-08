@@ -4,12 +4,27 @@
 \alias{CT_two_cal}
 \title{Calculate temperature-compensated Specific Conductance and two-point calibration for CT logger data}
 \usage{
-CT_two_cal(data, date, high.Ref, low.Ref, startHigh, endHigh, startLow, endLow)
+CT_two_cal(
+  data,
+  date,
+  temp,
+  EC,
+  high.Ref,
+  low.Ref,
+  startHigh,
+  endHigh,
+  startLow,
+  endLow
+)
 }
 \arguments{
 \item{data}{The dataframe containing raw Electrical Conductivity values}
 
 \item{date}{Date and time column used to filter out calibration times}
+
+\item{temp}{Temperature at which electrical conductivity values were logged}
+
+\item{EC}{Electrical conductivity logged at time of calibration}
 
 \item{high.Ref}{The high range conductivity calibration solution specific conductance value, uS/cm at 25degC}
 
@@ -22,10 +37,6 @@ CT_two_cal(data, date, high.Ref, low.Ref, startHigh, endHigh, startLow, endLow)
 \item{startLow}{Date and time at the start of the low range calibration}
 
 \item{endLow}{Date and time at the end of the low range calibration}
-
-\item{temp}{Temperature at which electrical conductivity values were logged}
-
-\item{EC}{Electrical conductivity logged at time of calibration}
 }
 \value{
 The original dataframe with the calibrated Electrical Conductivity values of CT logger data
