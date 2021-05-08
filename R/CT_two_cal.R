@@ -36,32 +36,33 @@ CT_two_cal<-function(data, date, temp, Abs_pressure = 10, EC, high.Ref, low.Ref,
 
   # use mean temperature of calibrations with PSS-78 and gsw package
   # Get EC of conductivity standard at logged temperature to calibrate logged EC readings
-  highCal.sp<-gsw_SP_from_C(C = high.Ref*0.001, t = 25, p = Abs_pressure)
-  highCal<-1000*gsw_C_from_SP(SP = highCal.sp, t = high.mean.temp, p = Abs_pressure)
+  highCal.sp<-gsw_SP_from_C(C = high.Ref*0.001, t = 25, p = Abs_pressure) # calculate salinity from specific conductance value of standard
+  highCal<-1000*gsw_C_from_SP(SP = highCal.sp, t = high.mean.temp, p = Abs_pressure) # calculate electrical conductivity of standard at logged temperature
 
   lowCal.sp<-gsw_SP_from_C(C = low.Ref*0.001, t = 25, p = Abs_pressure)
   lowCal<-1000*gsw_C_from_SP(SP = lowCal.sp, t = low.mean.temp, p = Abs_pressure)
 
 
-    # mean EC at calibration interval
-    rawHigh<-data %>%
-      filter(between({{date}}, {{startHigh}}, {{endHigh}})) %>%
-      summarise(mean = mean({{EC}})) %>%
-      as.numeric()
-    rawLow<-data %>%
-      filter(between({{date}}, {{startLow}}, {{endLow}})) %>%
-      summarise(mean = mean({{EC}})) %>%
-      as.numeric()
+  # mean EC at calibration interval
+  rawHigh<-data %>%
+    filter(between({{date}}, {{startHigh}}, {{endHigh}})) %>%
+    summarise(mean = mean({{EC}})) %>%
+    as.numeric()
+  rawLow<-data %>%
+    filter(between({{date}}, {{startLow}}, {{endLow}})) %>%
+    summarise(mean = mean({{EC}})) %>%
+    as.numeric()
 
-    # calibration
-    rawRange<-rawHigh - rawLow
-    refRange<-highCal - lowCal
+  # calibration
+  rawRange<-rawHigh - rawLow
+  refRange<-highCal - lowCal
 
-    data<-data %>%
-      mutate(EC_Cal = ((({{EC}} - rawLow) * refRange) / rawRange) + lowCal)
+  data<-data %>%
+    mutate(EC_Cal = ((({{EC}} - rawLow) * refRange) / rawRange) + lowCal)
 
 
   return(data)
+
 }
 
 
