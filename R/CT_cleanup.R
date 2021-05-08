@@ -8,10 +8,11 @@
 #'
 #' @param path Path to the input files
 #' @param ct_serial Logger serial number used in naming the input file
+#' @param tf_write Logical parameter indicating whether to save output files in an output folder. No default.
 #' @param recursive_tf Logical parameter indicating whether to search within folders at the file path. Default = FALSE
 #' @return A cleaned dataframe of CT logger data
 #' @export
-CT_cleanup <- function(path, ct_serial, recursive_tf = FALSE) {
+CT_cleanup <- function(path, ct_serial, tf_write = FALSE, recursive_tf = FALSE) {
 
   file.names.Cal<-basename(list.files(path, pattern = c(ct_serial,"csv$", recursive = recursive_tf))) #list all csv file names in the folder and subfolders
 
@@ -24,24 +25,32 @@ CT_cleanup <- function(path, ct_serial, recursive_tf = FALSE) {
     dplyr::rename(date=contains("Date"),
                   TempInSitu=contains("Temp"),
                   E_Conductivity=contains("High Range")) %>%
-    tidyr::drop_na()
+    tidyr::drop_na() %>%
+    dplyr::mutate(date = lubridate::mdy_hms(date))
 
-  condCal$date <- condCal$date %>%
-    readr::parse_datetime(format = "%m/%d/%y %H:%M:%S %p", # Convert 'date' to date and time vector type
-                          na = character(),
-                          locale = default_locale(),
-                          trim_ws = TRUE)
+  # condCal$date <- condCal$date %>%
+  #   readr::parse_datetime(format = "%m/%d/%y %H:%M:%S %p", # Convert 'date' to date and time vector type
+  #                         na = character(),
+  #                         locale = default_locale(),
+  #                         trim_ws = TRUE)
+
+
 
   ############################################################
   ### Nonlinear Temperature Compensation
   ############################################################
 
-  # https://www.aqion.de/site/112
-  condCal<-condCal %>%
-    mutate(A = (1.37023 * (TempInSitu - 20)) + 8.36 * (10^(-4) * ((TempInSitu - 20)^2))) %>%
-    mutate(B = 109 + TempInSitu) %>%
-    mutate(Sp_Conductance = 0.889 * (10^(A/B)) * E_Conductivity) %>%
-    dplyr::select(-c(A,B)) # remove intermediate columns
+  # # https://www.aqion.de/site/112
+  # condCal<-condCal %>%
+  #   mutate(A = (1.37023 * (TempInSitu - 20)) + 8.36 * (10^(-4) * ((TempInSitu - 20)^2))) %>%
+  #   mutate(B = 109 + TempInSitu) %>%
+  #   mutate(Sp_Conductance = 0.889 * (10^(A/B)) * E_Conductivity) %>%
+  #   dplyr::select(-c(A,B)) # remove intermediate columns
 
-  return(condCal)
+  # conditional write.csv at output path
+  if(tf_write == TRUE) {
+    write.csv(condCal, paste0(output.path,'/',Data_ID,'_tidy.csv'))
+  }
+
+  return(condCal) # return dataframe
 }
