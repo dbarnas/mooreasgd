@@ -6,15 +6,13 @@
 #'
 #' @param data The dataframe containing raw Electrical Conductivity values
 #' @param date Date and time column used to filter out calibration times
-#' @param temp Temperature at which electrical conductivity values were logged
 #' @param Abs_pressure Absolute pressure, measured in dbar, used to calculate salinity using the PSS-78 equation.  Default = 10dbar.
-#' @param EC Electrical conductivity logged at time of calibration
 #' @param cal.ref The conductivity calibration solution specific conductance value, uS/cm at 25degC
 #' @param startCal Date and time at the start of the calibration
 #' @param endCal Date and time at the end of the calibration
 #' @return The original dataframe with the newly calculated Specific Conductance and calibrated SC values of CT logger data
 #' @export
-CT_one_cal<-function(data, date, cal.ref, EC, temp, Abs_pressure = 10, startCal, endCal) {
+CT_one_cal<-function(data, date, cal.ref, Abs_pressure = 10, startCal, endCal) {
 
 
   ############################################################
@@ -24,7 +22,7 @@ CT_one_cal<-function(data, date, cal.ref, EC, temp, Abs_pressure = 10, startCal,
   # mean temperature at calibration
   mean.temp<-data %>%
     dplyr::filter(dplyr::between({{date}}, {{startCal}}, {{endCal}})) %>%
-    dplyr::rename(TempInSitu = contains(temp)) %>%
+    dplyr::rename(TempInSitu = contains("temp") | contains("Temp")) %>%
     dplyr::summarise(mean = mean(TempInSitu)) %>%
     as.numeric()
 
@@ -36,8 +34,8 @@ CT_one_cal<-function(data, date, cal.ref, EC, temp, Abs_pressure = 10, startCal,
   # Logger data in pre-deployment calibration
   mean.ec<-data%>%
     dplyr::filter(dplyr::between({{date}},{{startCal}},{{endCal}}))%>%
-    dplyr::rename(E.C = contains(EC)) %>%
-    dplyr::summarise(mean = mean(E.C)) %>%
+    dplyr::rename(EC = contains("EC") | contains("E_C")) %>%
+    dplyr::summarise(mean = mean(EC)) %>%
     as.numeric
 
   # Offset between the calibration reference and the logger reading
@@ -45,7 +43,7 @@ CT_one_cal<-function(data, date, cal.ref, EC, temp, Abs_pressure = 10, startCal,
 
   # Apply offset to logger data
   data<-data%>%
-    dplyr::mutate(EC_Cal = E.C + offset)
+    dplyr::mutate(EC_Cal = EC + offset)
 
   return(data)
 }
