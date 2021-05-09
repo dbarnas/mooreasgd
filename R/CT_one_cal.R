@@ -23,7 +23,7 @@ CT_one_cal<-function(data, date, temp, EC, cal.ref, startCal, endCal) {
   # mean temperature at calibration
   mean.temp<-data %>%
     dplyr::filter(dplyr::between({{date}}, {{startCal}}, {{endCal}})) %>%
-    dplyr::rename(TempInSitu = {{temp}}) %>%
+    dplyr::rename(TempInSitu = contains("temp") | contains("Temp")) %>%
     dplyr::summarise(mean = mean(TempInSitu)) %>%
     as.numeric()
 
@@ -35,7 +35,7 @@ CT_one_cal<-function(data, date, temp, EC, cal.ref, startCal, endCal) {
   # Logger data in pre-deployment calibration
   mean.ec<-data%>%
     dplyr::filter(dplyr::between({{date}},{{startCal}},{{endCal}}))%>%
-    dplyr::rename(EC = {{EC}}) %>%
+    dplyr::rename(EC = contains("EC") | contains("E_C")) %>%
     dplyr::summarise(mean = mean(EC)) %>%
     as.numeric()
 

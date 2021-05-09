@@ -26,12 +26,12 @@ CT_two_cal<-function(data, date,temp, EC, high.Ref, low.Ref, startHigh, endHigh,
   # mean temperature at calibration intervals
   high.mean.temp<-data %>%
     dplyr::filter(dplyr::between({{date}}, {{startHigh}}, {{endHigh}})) %>%
-    dplyr::rename(TempInSitu = {{temp}}) %>%
+    dplyr::rename(TempInSitu = contains("temp") | contains("Temp")) %>%
     dplyr::summarise(mean = mean(TempInSitu)) %>%
     as.numeric()
   low.mean.temp<-data %>%
     dplyr::filter(dplyr::between({{date}}, {{startLow}}, {{endLow}})) %>%
-    dplyr::rename(TempInSitu = {{temp}}) %>%
+    dplyr::rename(TempInSitu = contains("temp") | contains("Temp")) %>%
     dplyr::summarise(mean = mean(TempInSitu)) %>%
     as.numeric()
 
@@ -47,12 +47,12 @@ CT_two_cal<-function(data, date,temp, EC, high.Ref, low.Ref, startHigh, endHigh,
   # mean EC at calibration interval
   rawHigh<-data %>%
     dplyr::filter(dplyr::between({{date}}, {{startHigh}}, {{endHigh}})) %>%
-    dplyr::rename(EC = {{EC}}) %>%
+    dplyr::rename(EC = contains("EC") | contains("E_C")) %>%
     dplyr::summarise(mean = mean(EC)) %>%
     as.numeric()
   rawLow<-data %>%
     dplyr::filter(dplyr::between({{date}}, {{startLow}}, {{endLow}})) %>%
-    dplyr::rename(EC = {{EC}}) %>%
+    dplyr::rename(EC = contains("EC") | contains("E_C")) %>%
     dplyr::summarise(mean = mean(EC)) %>%
     as.numeric()
 
