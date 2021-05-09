@@ -19,7 +19,7 @@ WL_cleanup(
 
 \item{output.path}{Path for the output files}
 
-\item{tf_write}{Logical parameter indicating whether to save output files in an output folder. No default.}
+\item{tf_write}{Logical parameter indicating whether to save output files in an output folder. Default = FALSE.}
 
 \item{recursive_tf}{Logical parameter indicating whether to search within folders at the file path. Default = FALSE}
 }

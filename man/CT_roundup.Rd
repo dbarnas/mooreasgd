@@ -22,7 +22,7 @@ CT_roundup(
 
 \item{ct.serial}{Character string containing serial ID for a particular probe.  Used to filter from full dataset before returning final dataframe}
 
-\item{tf_write}{Logical parameter indicating whether to save output files in an output folder. No default.}
+\item{tf_write}{Logical parameter indicating whether to save output files in an output folder. Default = FALSE.}
 
 \item{tf_recursive}{Logical parameter indicating whether to search within folders at the data.path. Default = FALSE}
 }

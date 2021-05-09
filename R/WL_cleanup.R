@@ -9,7 +9,7 @@
 #' @param data.path Path to the input files
 #' @param output.path Path for the output files
 #' @param wl.serial Logger serial number used in naming the input file
-#' @param tf_write Logical parameter indicating whether to save output files in an output folder. No default.
+#' @param tf_write Logical parameter indicating whether to save output files in an output folder. Default = FALSE.
 #' @param recursive_tf Logical parameter indicating whether to search within folders at the file path. Default = FALSE
 #' @return A cleaned dataframe of pH logger data
 #' @export

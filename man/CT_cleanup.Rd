@@ -11,7 +11,7 @@ CT_cleanup(data.path, ct.serial, tf_write = FALSE, recursive_tf = FALSE)
 
 \item{ct.serial}{Logger serial number used in naming the input file}
 
-\item{tf_write}{Logical parameter indicating whether to save output files in an output folder. No default.}
+\item{tf_write}{Logical parameter indicating whether to save output files in an output folder. Default = FALSE.}
 
 \item{recursive_tf}{Logical parameter indicating whether to search within folders at the file path. Default = FALSE}
 

@@ -9,7 +9,7 @@
 #' @param output.path Path for the output files
 #' @param ct.serial Character string containing serial ID for a particular probe.  Used to filter from full dataset before returning final dataframe
 #' @param ct.pattern Character string or object referencing a character string that identifies CT logger data within the specified file path
-#' @param tf_write Logical parameter indicating whether to save output files in an output folder. No default.
+#' @param tf_write Logical parameter indicating whether to save output files in an output folder. Default = FALSE.
 #' @param tf_recursive Logical parameter indicating whether to search within folders at the data.path. Default = FALSE
 #' @return For every imported CT data file, one tidied file with temperature-compensated conductance is exported and returned
 #' @export

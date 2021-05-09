@@ -4,12 +4,22 @@
 \alias{pH_cleanup}
 \title{Clean up raw pH data file from the HOBO pH Logger}
 \usage{
-pH_cleanup(path, pH_serial, recursive_tf = FALSE)
+pH_cleanup(
+  data.path,
+  pH.serial,
+  output.path,
+  tf_write = FALSE,
+  recursive_tf = FALSE
+)
 }
 \arguments{
-\item{path}{Path to the input files}
+\item{data.path}{Path to the input files}
 
-\item{pH_serial}{Logger serial number used in naming the input file}
+\item{pH.serial}{Logger serial number used in naming the input file}
+
+\item{output.path}{Path for the output files}
+
+\item{tf_write}{Logical parameter indicating whether to save output files in an output folder. Default = FALSE.}
 
 \item{recursive_tf}{Logical parameter indicating whether to search within folders at the file path. Default = FALSE}
 }
