@@ -13,7 +13,7 @@
 #' @param recursive_tf Logical parameter indicating whether to search within folders at the file path. Default = FALSE
 #' @return A cleaned dataframe of CT logger data
 #' @export
-CT_cleanup <- function(data.path, ct.serial, tf_write = FALSE, recursive_tf = FALSE) {
+CT_cleanup <- function(data.path, ct.serial, output.path, tf_write = FALSE, recursive_tf = FALSE) {
 
   file.names.Cal<-basename(list.files(data.path, pattern = c(ct.serial,"csv$", recursive = recursive_tf))) #list all csv file names in the folder and subfolders
 
