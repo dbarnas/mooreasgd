@@ -8,15 +8,18 @@
 #' @param date Date and time column used to filter out calibration times
 #' @param temp Temperature at which electrical conductivity values were logged
 #' @param EC Electrical conductivity logged at time of calibration
-#' @param high.Ref The high range conductivity calibration solution specific conductance value, uS/cm at 25degC
-#' @param low.Ref The low range conductivity calibration solution specific conductance value, uS/cm at 25degC
+#' @param high.ref The high range conductivity calibration solution specific conductance value, uS/cm at 25degC
+#' @param low.ref The low range conductivity calibration solution specific conductance value, uS/cm at 25degC
+#' @param high.ref.temp High range in situ temperature, value from a secondary probe
+#' @param low.ref.temp Low range in situ temperature, value from a secondary probe
 #' @param startHigh Date and time at the start of the high range calibration
 #' @param endHigh Date and time at the end of the high range calibration
 #' @param startLow Date and time at the start of the low range calibration
 #' @param endLow Date and time at the end of the low range calibration
+#' @param EC_probe Logical parameter indicating whether the logger should be calibrated to a secondary probe's electrical conductivity and temperature values. Default = FALSE, indicating the logger should be calibrated to some standard's Specific Conductance value
 #' @return The original dataframe with the calibrated Electrical Conductivity values of CT logger data
 #' @export
-CT_two_cal<-function(data, date,temp, EC, high.Ref, low.Ref, startHigh, endHigh, startLow, endLow) {
+CT_two_cal<-function(data, date,temp, EC, high.ref, low.ref, high.ref.temp, low.ref.temp, startHigh, endHigh, startLow, endLow, EC_probe = FALSE) {
 
 
   ############################################################
@@ -35,6 +38,8 @@ CT_two_cal<-function(data, date,temp, EC, high.Ref, low.Ref, startHigh, endHigh,
     dplyr::summarise(mean = mean(TempInSitu)) %>%
     as.numeric()
 
+  if(EC_probe == FALSE){
+
   # use mean temperature of calibrations with PSS-78 and gsw package
   # Get EC of conductivity standard at logged temperature to calibrate logged EC readings
   highCal.sp<-gsw::gsw_SP_from_C(C = high.Ref*0.001, t = 25, p = 10) # calculate salinity from specific conductance value of standard
@@ -42,6 +47,11 @@ CT_two_cal<-function(data, date,temp, EC, high.Ref, low.Ref, startHigh, endHigh,
 
   lowCal.sp<-gsw::gsw_SP_from_C(C = low.Ref*0.001, t = 25, p = 10)
   lowCal<-1000*gsw::gsw_C_from_SP(SP = lowCal.sp, t = low.mean.temp, p = 10)
+
+  # assuming the temperature of the standard solution is equivalent to the temperature read by the logger
+  high.ref.temp = high.mean.temp
+  low.ref.temp = low.mean.temp
+  } # else, use cal.ref = ec reading from secondary probe and cal.ref.temp = temperature reading from probe
 
 
   # mean EC at calibration interval
