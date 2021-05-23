@@ -8,12 +8,14 @@
 #' @param date Date and time column used to filter out calibration times
 #' @param temp Temperature at which electrical conductivity values were logged
 #' @param EC Electrical conductivity logged at time of calibration
-#' @param cal.ref The conductivity calibration solution specific conductance value, uS/cm at 25degC
+#' @param cal.ref The conductivity calibration solution specific conductance value, uS/cm at 25degC, or the electrical conductivity value of a secondary probe
+#' @param cal.ref.temp The temperature of the conductivity standard or in situ water read by a secondary probe
 #' @param startCal Date and time at the start of the calibration
 #' @param endCal Date and time at the end of the calibration
+#' @param EC_probe Logical parameter indicating whether the logger should be calibrated to a secondary probe's electrical conductivity and temperature values. Default = FALSE, indicating the logger should be calibrated to some standard's Specific Conductance value
 #' @return The original dataframe with the newly calculated Specific Conductance and calibrated SC values of CT logger data
 #' @export
-CT_one_cal<-function(data, date, temp, EC, cal.ref, startCal, endCal) {
+CT_one_cal<-function(data, date, temp, EC, cal.ref, cal.ref.temp, startCal, endCal, EC_probe = FALSE) {
 
 
   ############################################################
@@ -27,10 +29,16 @@ CT_one_cal<-function(data, date, temp, EC, cal.ref, startCal, endCal) {
     dplyr::summarise(mean = mean(TempInSitu)) %>%
     as.numeric()
 
+  if(EC_insitu == FALSE){
+
   # use mean temperature of calibrations with PSS-78 and gsw package
   # Get EC of conductivity standard at logged temperature to calibrate logged EC readings
   cal.sp<-gsw::gsw_SP_from_C(C = cal.ref*0.001, t = 25, p = 10)
   cal.ref<-1000*gsw::gsw_C_from_SP(SP = cal.sp, t = mean.temp, p = 10)
+
+  # assuming the temperature of the standard solution is equivalent to the temperature read by the logger
+  cal.ref.temp = mean.temp
+  } # else, use cal.ref = ec reading from secondary probe and cal.ref.temp = temperature reading from probe
 
   # Logger data in pre-deployment calibration
   mean.ec<-data%>%
@@ -40,11 +48,13 @@ CT_one_cal<-function(data, date, temp, EC, cal.ref, startCal, endCal) {
     as.numeric()
 
   # Offset between the calibration reference and the logger reading
-  offset<-cal.ref - mean.ec
+  offset.ec<-cal.ref - mean.ec
+  offset.temp<-cal.ref.temp - mean.temp
 
   # Apply offset to logger data
   data<-data%>%
-    dplyr::mutate(EC_Cal = EC + offset)
+    dplyr::mutate(EC_Cal = EC + offset.ec,
+                  TempInSitu = TempInSitu + offset.temp)
 
   return(data)
 }

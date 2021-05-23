@@ -4,7 +4,17 @@
 \alias{CT_one_cal}
 \title{Calculate temperature-compensated Specific Conductance and one-point calibration for CT logger data}
 \usage{
-CT_one_cal(data, date, temp, EC, cal.ref, startCal, endCal)
+CT_one_cal(
+  data,
+  date,
+  temp,
+  EC,
+  cal.ref,
+  cal.ref.temp,
+  startCal,
+  endCal,
+  EC_probe = FALSE
+)
 }
 \arguments{
 \item{data}{The dataframe containing raw Electrical Conductivity values}
@@ -15,11 +25,15 @@ CT_one_cal(data, date, temp, EC, cal.ref, startCal, endCal)
 
 \item{EC}{Electrical conductivity logged at time of calibration}
 
-\item{cal.ref}{The conductivity calibration solution specific conductance value, uS/cm at 25degC}
+\item{cal.ref}{The conductivity calibration solution specific conductance value, uS/cm at 25degC, or the electrical conductivity value of a secondary probe}
+
+\item{cal.ref.temp}{The temperature of the conductivity standard or in situ water read by a secondary probe}
 
 \item{startCal}{Date and time at the start of the calibration}
 
 \item{endCal}{Date and time at the end of the calibration}
+
+\item{EC_probe}{Logical parameter indicating whether the logger should be calibrated to a secondary probe's electrical conductivity and temperature values. Default = FALSE, indicating the logger should be calibrated to some standard's Specific Conductance value}
 }
 \value{
 The original dataframe with the newly calculated Specific Conductance and calibrated SC values of CT logger data
