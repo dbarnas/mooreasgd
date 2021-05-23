@@ -7,15 +7,15 @@
 #' @param data The dataframe containing raw Electrical Conductivity values
 #' @param date Date and time column used to filter out calibration times
 #' @param temp Temperature at which electrical conductivity values were logged
-#' @param EC Electrical conductivity logged at time of calibration
+#' @param EC.logger Electrical conductivity logged at time of calibration
 #' @param cal.ref The conductivity calibration solution specific conductance value, uS/cm at 25degC, or the electrical conductivity value of a secondary probe
 #' @param cal.ref.temp The temperature of the conductivity standard or in situ water read by a secondary probe
 #' @param startCal Date and time at the start of the calibration
 #' @param endCal Date and time at the end of the calibration
-#' @param EC_probe Logical parameter indicating whether the logger should be calibrated to a secondary probe's electrical conductivity and temperature values. Default = FALSE, indicating the logger should be calibrated to some standard's Specific Conductance value
+#' @param EC.cal Logical parameter indicating whether the logger should be calibrated to an electrical conductivity value, then TRUE, or a specific conductance value, then FALSE. Default = FALSE.
 #' @return The original dataframe with the newly calculated Specific Conductance and calibrated SC values of CT logger data
 #' @export
-CT_one_cal<-function(data, date, temp, EC, cal.ref, cal.ref.temp, startCal, endCal, EC_probe = FALSE) {
+CT_one_cal<-function(data, date, temp, EC.logger, cal.ref, cal.ref.temp, startCal, endCal, EC.cal = FALSE) {
 
 
   ############################################################
@@ -43,8 +43,8 @@ CT_one_cal<-function(data, date, temp, EC, cal.ref, cal.ref.temp, startCal, endC
   # Logger data in pre-deployment calibration
   mean.ec<-data%>%
     dplyr::filter(dplyr::between({{date}},{{startCal}},{{endCal}}))%>%
-    dplyr::rename(EC = contains("EC") | contains("E_C")) %>%
-    dplyr::summarise(mean = mean(EC)) %>%
+    dplyr::rename(EC_logger = contains("EC") | contains("E_C")) %>%
+    dplyr::summarise(mean = mean(EC_logger)) %>%
     as.numeric()
 
   # Offset between the calibration reference and the logger reading
@@ -53,8 +53,8 @@ CT_one_cal<-function(data, date, temp, EC, cal.ref, cal.ref.temp, startCal, endC
 
   # Apply offset to logger data
   data<-data%>%
-    dplyr::mutate(EC_Cal = EC + offset.ec,
-                  TempInSitu = TempInSitu + offset.temp)
+    dplyr::mutate(EC_Cal = EC_logger + offset.ec,
+                  TempInSitu_Cal = TempInSitu + offset.temp)
 
   return(data)
 }

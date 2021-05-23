@@ -7,7 +7,7 @@
 #' @param data The dataframe containing raw Electrical Conductivity values
 #' @param date Date and time column used to filter out calibration times
 #' @param temp Temperature at which electrical conductivity values were logged
-#' @param EC Electrical conductivity logged at time of calibration
+#' @param EC.logger Electrical conductivity logged at time of calibration
 #' @param high.ref The high range conductivity calibration solution specific conductance value, uS/cm at 25degC
 #' @param low.ref The low range conductivity calibration solution specific conductance value, uS/cm at 25degC
 #' @param high.ref.temp High range in situ temperature, value from a secondary probe
@@ -16,10 +16,10 @@
 #' @param endHigh Date and time at the end of the high range calibration
 #' @param startLow Date and time at the start of the low range calibration
 #' @param endLow Date and time at the end of the low range calibration
-#' @param EC_probe Logical parameter indicating whether the logger should be calibrated to a secondary probe's electrical conductivity and temperature values. Default = FALSE, indicating the logger should be calibrated to some standard's Specific Conductance value
+#' @param EC.cal Logical parameter indicating whether the logger should be calibrated to an electrical conductivity value, then TRUE, or a specific conductance value, then FALSE. Default = FALSE.
 #' @return The original dataframe with the calibrated Electrical Conductivity values of CT logger data
 #' @export
-CT_two_cal<-function(data, date,temp, EC, high.ref, low.ref, high.ref.temp, low.ref.temp, startHigh, endHigh, startLow, endLow, EC_probe = FALSE) {
+CT_two_cal<-function(data, date,temp, EC.logger, high.ref, low.ref, high.ref.temp, low.ref.temp, startHigh, endHigh, startLow, endLow, EC.cal = FALSE) {
 
 
   ############################################################
@@ -57,13 +57,13 @@ CT_two_cal<-function(data, date,temp, EC, high.ref, low.ref, high.ref.temp, low.
   # mean EC at calibration interval
   rawHigh<-data %>%
     dplyr::filter(dplyr::between({{date}}, {{startHigh}}, {{endHigh}})) %>%
-    dplyr::rename(EC = contains("EC") | contains("E_C")) %>%
-    dplyr::summarise(mean = mean(EC)) %>%
+    dplyr::rename(EC.logger = contains("EC") | contains("E_C")) %>%
+    dplyr::summarise(mean = mean(EC.logger)) %>%
     as.numeric()
   rawLow<-data %>%
     dplyr::filter(dplyr::between({{date}}, {{startLow}}, {{endLow}})) %>%
-    dplyr::rename(EC = contains("EC") | contains("E_C")) %>%
-    dplyr::summarise(mean = mean(EC)) %>%
+    dplyr::rename(EC.logger = contains("EC") | contains("E_C")) %>%
+    dplyr::summarise(mean = mean(EC.logger)) %>%
     as.numeric()
 
   # calibration
@@ -71,7 +71,7 @@ CT_two_cal<-function(data, date,temp, EC, high.ref, low.ref, high.ref.temp, low.
   refRange<-highCal - lowCal
 
   data<-data %>%
-    dplyr::mutate(EC_Cal = (((EC - rawLow) * refRange) / rawRange) + lowCal)
+    dplyr::mutate(EC_Cal = (((EC.logger - rawLow) * refRange) / rawRange) + lowCal)
 
 
   return(data)

@@ -8,7 +8,7 @@ CT_two_cal(
   data,
   date,
   temp,
-  EC,
+  EC.logger,
   high.ref,
   low.ref,
   high.ref.temp,
@@ -17,7 +17,7 @@ CT_two_cal(
   endHigh,
   startLow,
   endLow,
-  EC_probe = FALSE
+  EC.cal = FALSE
 )
 }
 \arguments{
@@ -27,7 +27,7 @@ CT_two_cal(
 
 \item{temp}{Temperature at which electrical conductivity values were logged}
 
-\item{EC}{Electrical conductivity logged at time of calibration}
+\item{EC.logger}{Electrical conductivity logged at time of calibration}
 
 \item{high.ref}{The high range conductivity calibration solution specific conductance value, uS/cm at 25degC}
 
@@ -45,7 +45,7 @@ CT_two_cal(
 
 \item{endLow}{Date and time at the end of the low range calibration}
 
-\item{EC_probe}{Logical parameter indicating whether the logger should be calibrated to a secondary probe's electrical conductivity and temperature values. Default = FALSE, indicating the logger should be calibrated to some standard's Specific Conductance value}
+\item{EC.cal}{Logical parameter indicating whether the logger should be calibrated to an electrical conductivity value, then TRUE, or a specific conductance value, then FALSE. Default = FALSE.}
 }
 \value{
 The original dataframe with the calibrated Electrical Conductivity values of CT logger data
