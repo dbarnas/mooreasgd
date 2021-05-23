@@ -29,7 +29,7 @@ CT_one_cal<-function(data, date, temp, EC.logger, cal.ref, cal.ref.temp, startCa
     dplyr::summarise(mean = mean(TempInSitu)) %>%
     as.numeric()
 
-  if(EC_probe == FALSE){
+  if(EC.cal == FALSE){
 
   # use mean temperature of calibrations with PSS-78 and gsw package
   # Get EC of conductivity standard at logged temperature to calibrate logged EC readings
