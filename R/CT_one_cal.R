@@ -43,8 +43,8 @@ CT_one_cal<-function(data, date, temp, EC.logger, cal.ref, cal.ref.temp, startCa
   # Logger data in pre-deployment calibration
   mean.ec<-data%>%
     dplyr::filter(dplyr::between({{date}},{{startCal}},{{endCal}}))%>%
-    dplyr::rename(EC_logger = contains("EC") | contains("E_C")) %>%
-    dplyr::summarise(mean = mean(EC_logger)) %>%
+    dplyr::rename(EC.logger = contains("EC") | contains("E_C")) %>%
+    dplyr::summarise(mean = mean(EC.logger)) %>%
     as.numeric()
 
   # Offset between the calibration reference and the logger reading
@@ -53,7 +53,7 @@ CT_one_cal<-function(data, date, temp, EC.logger, cal.ref, cal.ref.temp, startCa
 
   # Apply offset to logger data
   data<-data%>%
-    dplyr::mutate(EC_Cal = EC_logger + offset.ec,
+    dplyr::mutate(EC_Cal = EC.logger + offset.ec,
                   TempInSitu_Cal = TempInSitu + offset.temp)
 
   return(data)
