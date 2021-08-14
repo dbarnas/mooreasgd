@@ -15,7 +15,8 @@
 #' @export
 CT_cleanup <- function(data.path, ct.serial, output.path, write_tf = FALSE, recursive_tf = FALSE) {
 
-  file.names.Cal<-basename(list.files(data.path, pattern = c(ct.serial,"csv$", recursive = recursive_tf))) #list all csv file names in the folder and subfolders
+  file.names.Cal<-ba
+  sename(list.files(data.path, pattern = c(ct.serial,"csv$", recursive = recursive_tf))) #list all csv file names in the folder and subfolders
 
   condCal <- file.names.Cal %>%
     purrr::map_dfr(~ readr::read_csv(file.path(data.path, .), skip=1, col_names=T)) # read all csv files at the file path, skipping 1 line of metadata
