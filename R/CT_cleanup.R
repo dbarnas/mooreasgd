@@ -9,11 +9,11 @@
 #' @param data.path Path to the input files
 #' @param output.path Path for the output files
 #' @param ct.serial Logger serial number used in naming the input file
-#' @param tf_write Logical parameter indicating whether to save output files in an output folder. Default = FALSE.
+#' @param write_tf Logical parameter indicating whether to save output files in an output folder. Default = FALSE.
 #' @param recursive_tf Logical parameter indicating whether to search within folders at the file path. Default = FALSE
 #' @return A cleaned dataframe of CT logger data
 #' @export
-CT_cleanup <- function(data.path, ct.serial, output.path, tf_write = FALSE, recursive_tf = FALSE) {
+CT_cleanup <- function(data.path, ct.serial, output.path, write_tf = FALSE, recursive_tf = FALSE) {
 
   file.names.Cal<-basename(list.files(data.path, pattern = c(ct.serial,"csv$", recursive = recursive_tf))) #list all csv file names in the folder and subfolders
 
@@ -22,7 +22,7 @@ CT_cleanup <- function(data.path, ct.serial, output.path, tf_write = FALSE, recu
 
   condCal<-condCal %>%
     dplyr::select(contains('Date'), contains(ct.serial), contains("High Range"), contains("Temp")) %>% # Filter specified probe by Serial number
-    dplyr::mutate(Serial=paste0("CT_",ct.serial)) %>% # add column for CT serial number
+    dplyr::mutate(LoggerID=paste0("CT_",ct.serial)) %>% # add column for CT serial number
     dplyr::rename(date=contains("Date"),
                   TempInSitu=contains("Temp"),
                   E_Conductivity=contains("High Range")) %>%
@@ -49,7 +49,7 @@ CT_cleanup <- function(data.path, ct.serial, output.path, tf_write = FALSE, recu
   #   dplyr::select(-c(A,B)) # remove intermediate columns
 
   # conditional write.csv at output path
-  if(tf_write == TRUE) {
+  if(write_tf == TRUE) {
     write.csv(condCal, paste0(output.path,'/CT_',ct.serial,'_tidy.csv'))
   }
 
