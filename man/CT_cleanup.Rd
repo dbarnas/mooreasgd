@@ -8,7 +8,7 @@ CT_cleanup(
   data.path,
   ct.serial,
   output.path,
-  tf_write = FALSE,
+  write_tf = FALSE,
   recursive_tf = FALSE
 )
 }
@@ -19,7 +19,7 @@ CT_cleanup(
 
 \item{output.path}{Path for the output files}
 
-\item{tf_write}{Logical parameter indicating whether to save output files in an output folder. Default = FALSE.}
+\item{write_tf}{Logical parameter indicating whether to save output files in an output folder. Default = FALSE.}
 
 \item{recursive_tf}{Logical parameter indicating whether to search within folders at the file path. Default = FALSE}
 }
