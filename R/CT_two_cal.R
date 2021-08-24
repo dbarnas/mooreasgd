@@ -51,7 +51,10 @@ CT_two_cal<-function(data, date,temp, EC.logger, high.ref, low.ref, high.ref.tem
   # assuming the temperature of the standard solution is equivalent to the temperature read by the logger
   high.ref.temp = high.mean.temp
   low.ref.temp = low.mean.temp
-  } # else, use cal.ref = ec reading from secondary probe and cal.ref.temp = temperature reading from probe
+  } else { # else, use cal.ref = ec reading from secondary probe and cal.ref.temp = temperature reading from probe
+  highCal = high.ref
+  lowCal = low.ref
+  }
 
 
   # mean EC at calibration interval

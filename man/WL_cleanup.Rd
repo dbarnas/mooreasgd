@@ -9,7 +9,7 @@ WL_cleanup(
   wl.serial,
   output.path,
   tf_write = FALSE,
-  recursive_tf = FALSE
+  tf_recursive = FALSE
 )
 }
 \arguments{
@@ -21,7 +21,7 @@ WL_cleanup(
 
 \item{tf_write}{Logical parameter indicating whether to save output files in an output folder. Default = FALSE.}
 
-\item{recursive_tf}{Logical parameter indicating whether to search within folders at the file path. Default = FALSE}
+\item{tf_recursive}{Logical parameter indicating whether to search within folders at the file path. Default = FALSE}
 }
 \value{
 A cleaned dataframe of pH logger data

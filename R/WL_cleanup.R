@@ -10,19 +10,19 @@
 #' @param output.path Path for the output files
 #' @param wl.serial Logger serial number used in naming the input file
 #' @param tf_write Logical parameter indicating whether to save output files in an output folder. Default = FALSE.
-#' @param recursive_tf Logical parameter indicating whether to search within folders at the file path. Default = FALSE
+#' @param tf_recursive Logical parameter indicating whether to search within folders at the file path. Default = FALSE
 #' @return A cleaned dataframe of pH logger data
 #' @export
-WL_cleanup <- function(data.path, wl.serial, output.path, tf_write = FALSE, recursive_tf = FALSE) {
+WL_cleanup <- function(data.path, wl.serial, output.path, tf_write = FALSE, tf_recursive = FALSE) {
 
-  file.names.wl<-basename(list.files(data.path, pattern = c(wl.serial,"csv$"), recursive = recursive_tf)) #list all csv file names in the folder and subfolders
+  file.names.wl<-basename(list.files(data.path, pattern = c(wl.serial,"csv$"), recursive = tf_recursive)) #list all csv file names in the folder and subfolders
 
   depthLog <- file.names.wl %>%
     purrr::map_dfr(~ readr::read_csv(file.path(data.path, .), skip=1, col_names=T)) # read all csv files at the file path, skipping 1 line of metadata
 
   depthLog<-depthLog %>%
     dplyr::select(contains('Date'), contains(wl.serial), contains("Temp"),contains("Abs Pres"), contains("Water Level")) %>% # Filter specified probe by Serial number
-    dplyr::mutate(Serial=paste0("WL_",wl.serial)) %>% # add column for CT serial number
+    dplyr::mutate(LoggerID=paste0("WL_",wl.serial)) %>% # add column for CT serial number
     dplyr::rename(date=contains("Date"),
                   TempInSitu=contains("Temp"),
                   AbsPressure=contains("Abs Pres"),
