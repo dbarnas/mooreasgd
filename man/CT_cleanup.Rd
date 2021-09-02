@@ -2,34 +2,33 @@
 % Please edit documentation in R/CT_cleanup.R
 \name{CT_cleanup}
 \alias{CT_cleanup}
-\title{Clean up raw conductivity-temperature, CT, data file from the HOBO CT Logger}
+\title{Import, clean up, and export multiple raw conductivity-temperature, CT, data files from the HOBO CT Logger}
 \usage{
 CT_cleanup(
   data.path,
-  ct.serial,
   output.path,
-  write_tf = FALSE,
-  recursive_tf = FALSE
+  path.pattern,
+  tf.write = FALSE,
+  tf.recursive = FALSE
 )
 }
 \arguments{
 \item{data.path}{Path to the input files}
 
-\item{ct.serial}{Logger serial number used in naming the input file}
-
 \item{output.path}{Path for the output files}
 
-\item{write_tf}{Logical parameter indicating whether to save output files in an output folder. Default = FALSE.}
+\item{path.pattern}{Character string or object referencing a character string that identifies CT logger data within the specified file path}
 
-\item{recursive_tf}{Logical parameter indicating whether to search within folders at the file path. Default = FALSE}
+\item{tf.write}{Logical parameter indicating whether to save output files in an output folder. Default = FALSE.}
+
+\item{tf.recursive}{Logical parameter indicating whether to search within folders at the data.path. Default = FALSE}
 }
 \value{
-A cleaned dataframe of CT logger data
+For every imported CT data file, one tidied file with temperature-compensated conductance is exported and returned
 }
 \description{
-This function loads a raw CT file. It searches a directory for the correct logger's serial number,
-plucks out the correct file or files and stacks all related files into one loaded csv.
-It removes the first row of each relevant file containing logger information, then retains column headers.
+This function loads all raw .csv files within the data.path folder.
+It removes the first row of each file containing logger information, then retains column headers.
 Unnecessary columns are removed, and the remaining columns are renamed as needed for simplicity and consistency.
 Any rows containing NA's are dropped.
 }

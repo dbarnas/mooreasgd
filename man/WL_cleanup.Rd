@@ -2,12 +2,12 @@
 % Please edit documentation in R/WL_cleanup.R
 \name{WL_cleanup}
 \alias{WL_cleanup}
-\title{Clean up raw depth data file from the HOBO water level Logger}
+\title{Import, clean up, and export multiple raw conductivity-temperature, CT, data files from the HOBO CT Logger}
 \usage{
 WL_cleanup(
   data.path,
-  wl.serial,
   output.path,
+  wl.serial = FALSE,
   tf_write = FALSE,
   tf_recursive = FALSE
 )
@@ -15,21 +15,20 @@ WL_cleanup(
 \arguments{
 \item{data.path}{Path to the input files}
 
-\item{wl.serial}{Logger serial number used in naming the input file}
-
 \item{output.path}{Path for the output files}
 
-\item{tf_write}{Logical parameter indicating whether to save output files in an output folder. Default = FALSE.}
+\item{wl.serial}{Character string containing serial ID for a particular probe.  Used to filter from full dataset before returning final dataframe}
 
-\item{tf_recursive}{Logical parameter indicating whether to search within folders at the file path. Default = FALSE}
+\item{tf_write}{Logical parameter indicating whether to save output files in an output folder. No default.}
+
+\item{tf_recursive}{Logical parameter indicating whether to search within folders at the data.path. Default = FALSE}
 }
 \value{
-A cleaned dataframe of pH logger data
+For every imported CT data file, one tidied file with temperature-compensated conductance is exported and returned
 }
 \description{
-This function loads a raw water level file. It searches a directory for the correct logger's serial number,
-plucks out the correct file or files and stacks all related files into one loaded csv.
-It removes the first row of each relevant file containing logger information, then retains column headers.
+This function loads all raw .csv files within the data.path folder.
+It removes the first row of each file containing logger information, then retains column headers.
 Unnecessary columns are removed, and the remaining columns are renamed as needed for simplicity and consistency.
 Any rows containing NA's are dropped.
 }

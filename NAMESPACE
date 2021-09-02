@@ -2,8 +2,6 @@
 
 export(CT_cleanup)
 export(CT_one_cal)
-export(CT_roundup)
 export(CT_two_cal)
 export(WL_cleanup)
-export(WL_roundup)
 export(pH_cleanup)
