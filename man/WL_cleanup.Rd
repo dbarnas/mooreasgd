@@ -7,9 +7,9 @@
 WL_cleanup(
   data.path,
   output.path,
-  wl.serial = FALSE,
-  tf_write = FALSE,
-  tf_recursive = FALSE
+  path.pattern,
+  tf.write = FALSE,
+  tf.recursive = FALSE
 )
 }
 \arguments{
@@ -17,11 +17,11 @@ WL_cleanup(
 
 \item{output.path}{Path for the output files}
 
-\item{wl.serial}{Character string containing serial ID for a particular probe.  Used to filter from full dataset before returning final dataframe}
+\item{path.pattern}{Character string or object referencing a character string that identifies WL logger data within the specified file path}
 
-\item{tf_write}{Logical parameter indicating whether to save output files in an output folder. No default.}
+\item{tf.write}{Logical parameter indicating whether to save output files in an output folder. No default.}
 
-\item{tf_recursive}{Logical parameter indicating whether to search within folders at the data.path. Default = FALSE}
+\item{tf.recursive}{Logical parameter indicating whether to search within folders at the data.path. Default = FALSE}
 }
 \value{
 For every imported CT data file, one tidied file with temperature-compensated conductance is exported and returned

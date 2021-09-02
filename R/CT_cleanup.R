@@ -15,7 +15,7 @@
 CT_cleanup<-function(data.path, output.path, path.pattern, tf.write = FALSE, tf.recursive = FALSE){
 
   # Create a list of all files within the directory folder
-  file.names.Cal<-basename(list.files(data.path, pattern = path.pattern, recursive = tf_recursive)) #list all csv file names in the folder and subfolders
+  file.names.Cal<-basename(list.files(data.path, pattern = path.pattern, recursive = tf.recursive)) #list all csv file names in the folder and subfolders
 
   # Create an empty dataframe to store all subsequent tidied df's into
   full_df <- tibble::tibble(
@@ -32,7 +32,7 @@ CT_cleanup<-function(data.path, output.path, path.pattern, tf.write = FALSE, tf.
   for(i in 1:length(file.names.Cal)) {
     Data_ID<-file.names.Cal[[i]]
 
-    file.names<-basename(list.files(data.path, pattern = c(Data_ID, "csv$"), recursive = tf_recursive)) #list all csv file names in the folder and subfolders
+    file.names<-basename(list.files(data.path, pattern = c(Data_ID, "csv$"), recursive = tf.recursive)) #list all csv file names in the folder and subfolders
 
     condCal <- file.names %>%
       purrr::map_dfr(~ readr::read_csv(file.path(data.path, .), skip=1, col_names=T)) # read all csv files at the file path, skipping 1 line of metadata and bind together
@@ -52,7 +52,7 @@ CT_cleanup<-function(data.path, output.path, path.pattern, tf.write = FALSE, tf.
       dplyr::full_join(condCal) # save your dataframes into a larger df
 
     # conditional write.csv at output path
-    if(tf_write == TRUE) {
+    if(tf.write == TRUE) {
       write.csv(condCal, paste0(output.path,'/',Data_ID,'_tidy.csv'))
     }
    }
