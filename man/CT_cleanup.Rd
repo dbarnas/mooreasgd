@@ -9,7 +9,8 @@ CT_cleanup(
   output.path,
   path.pattern,
   tf.write = FALSE,
-  tf.recursive = FALSE
+  tf.recursive = FALSE,
+  hobo.cal = FALSE
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ CT_cleanup(
 \item{tf.write}{Logical parameter indicating whether to save output files in an output folder. Default = FALSE.}
 
 \item{tf.recursive}{Logical parameter indicating whether to search within folders at the data.path. Default = FALSE}
+
+\item{hobo.cal}{Logical parameter indicating whether the .hobo file has been pre-calibrated using HOBOware software and exported as a processed .csv. Default = FALSE}
 }
 \value{
 For every imported CT data file, one tidied file with temperature-compensated conductance is exported and returned
