@@ -47,7 +47,7 @@ WL_cleanup<-function(data.path, output.path, path.pattern, tf.write = FALSE, tf.
                     Depth=contains("Water Level")) %>%
       tidyr::drop_na() %>%
       tidyr::separate(col = 'List.ID', into = c('List.ID',NA), sep = ".csv", remove = T) %>%  # remove the '.csv'
-      dplyr::mutate(date = lubridate::mdy_hms(date))
+      dplyr::mutate(date = lubridate::mdy_hm(date))
 
 
     if(tf.write != FALSE) {
