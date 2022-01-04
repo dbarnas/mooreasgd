@@ -18,7 +18,7 @@ CT_cleanup<-function(data.path, output.path, path.pattern, tf.write = FALSE, tf.
 
   if(hobo.cal == FALSE){
   # Create a list of all files within the directory folder
-  file.names.Cal<-basename(list.files(data.path, pattern = path.pattern, recursive = tf.recursive)) #list all csv file names in the folder and subfolders
+  file.names.full<-basename(list.files(data.path, pattern = path.pattern, recursive = tf.recursive)) #list all csv file names in the folder and subfolders
 
   # Create an empty dataframe to store all subsequent tidied df's into
   full_df <- tibble::tibble(
@@ -32,8 +32,8 @@ CT_cleanup<-function(data.path, output.path, path.pattern, tf.write = FALSE, tf.
   ## Tidy the data,
   ## Create a column for temperature-compensated specific conductance, and
   ## Export the new file to an output folder
-  for(i in 1:length(file.names.Cal)) {
-    Data_ID<-file.names.Cal[[i]]
+  for(i in 1:length(file.names.full)) {
+    Data_ID<-file.names.full[[i]]
 
     file.names<-basename(list.files(data.path, pattern = c(Data_ID, "csv$"), recursive = tf.recursive)) #list all csv file names in the folder and subfolders
 
@@ -78,16 +78,16 @@ CT_cleanup<-function(data.path, output.path, path.pattern, tf.write = FALSE, tf.
     # conditional write.csv at output path
     if(tf.write == TRUE) {
       if(exists('output.path') == T){
-      write_csv(condCal, paste0(output.path,'/',Data_ID,'_tidy.csv'))
+      write_csv(condCal, paste0(output.path,'/',Data_ID,'_tidyCT.csv'))
       } else if(exists('output.path') == F) {
-      write_csv(condCal, paste0(data.path,'/',Data_ID,'_tidy.csv'))
+      write_csv(condCal, paste0(data.path,'/',Data_ID,'_tidyCT.csv'))
       }
     }
    }
 } else { # end of if(hobo.cal == FALSE)
 
     # Create a list of all files within the directory folder
-    file.names.Cal<-basename(list.files(data.path, pattern = path.pattern, recursive = tf.recursive)) #list all csv file names in the folder and subfolders
+  file.names.full<-basename(list.files(data.path, pattern = path.pattern, recursive = tf.recursive)) #list all csv file names in the folder and subfolders
 
     # Create an empty dataframe to store all subsequent tidied df's into
     full_df <- tibble::tibble(
@@ -102,8 +102,8 @@ CT_cleanup<-function(data.path, output.path, path.pattern, tf.write = FALSE, tf.
     ## Tidy the data,
     ## Create a column for temperature-compensated specific conductance, and
     ## Export the new file to an output folder
-    for(i in 1:length(file.names.Cal)) {
-      Data_ID<-file.names.Cal[[i]]
+    for(i in 1:length(file.names.full)) {
+      Data_ID<-file.names.full[[i]]
 
       file.names<-basename(list.files(data.path, pattern = c(Data_ID, "csv$"), recursive = tf.recursive)) #list all csv file names in the folder and subfolders
 
@@ -150,9 +150,9 @@ CT_cleanup<-function(data.path, output.path, path.pattern, tf.write = FALSE, tf.
       # conditional write.csv at output path
       if(tf.write == TRUE) {
         if(exists(output.path) == T){
-          write_csv(condCal, paste0(output.path,'/',Data_ID,'_tidy.csv'))
+          write_csv(condCal, paste0(output.path,'/',Data_ID,'_tidyCT.csv'))
         } else {
-          write_csv(condCal, paste0(data.path,'/',Data_ID,'_tidy.csv'))
+          write_csv(condCal, paste0(data.path,'/',Data_ID,'_tidyCT.csv'))
         }
       }
     }
