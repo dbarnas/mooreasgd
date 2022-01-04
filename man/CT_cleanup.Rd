@@ -10,7 +10,8 @@ CT_cleanup(
   path.pattern,
   tf.write = FALSE,
   tf.recursive = FALSE,
-  hobo.cal = FALSE
+  hobo.cal = FALSE,
+  cond.range = "high"
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ CT_cleanup(
 \item{tf.recursive}{Logical parameter indicating whether to search within folders at the data.path. Default = FALSE}
 
 \item{hobo.cal}{Logical parameter indicating whether the .hobo file has been pre-calibrated using HOBOware software and exported as a processed .csv. Default = FALSE}
+
+\item{cond.range}{Character string or object indicating whether conductivity was recorded in High ("high"), Low ("low"), or both ("highlow") ranges. Default = "high"}
 }
 \value{
 For every imported CT data file, one tidied file with temperature-compensated conductance is exported and returned
