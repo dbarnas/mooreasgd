@@ -78,7 +78,7 @@ CT_cleanup<-function(data.path, output.path, path.pattern, tf.write = FALSE, tf.
 
     # conditional write.csv at output path
     if(tf.write == TRUE) {
-      if(exists(output.path == T)){
+      if(exists(output.path) == T){
       write.csv(condCal, paste0(output.path,'/',Data_ID,'_tidy.csv'))
       } else {
       write.csv(condCal, paste0(data.path,'/',Data_ID,'_tidy.csv'))
@@ -154,7 +154,7 @@ CT_cleanup<-function(data.path, output.path, path.pattern, tf.write = FALSE, tf.
 
       # conditional write.csv at output path
       if(tf.write == TRUE) {
-        if(exists(output.path == T)){
+        if(exists(output.path) == T){
           write.csv(condCal, paste0(output.path,'/',Data_ID,'_tidy.csv'))
         } else {
           write.csv(condCal, paste0(data.path,'/',Data_ID,'_tidy.csv'))
