@@ -78,6 +78,7 @@ CT_cleanup<-function(data.path, output.path, path.pattern, tf.write = FALSE, tf.
 
     # conditional write.csv at output path
     if(tf.write == TRUE) {
+      Data_ID<-stringr::str_split_fixed(Data_ID,".csv",2)[1,1] # remove ".csv" from the filename before renaming
       if(exists(output.path) == T){
       write.csv(condCal, paste0(output.path,'/',Data_ID,'_tidy.csv'))
       } else {
@@ -154,6 +155,7 @@ CT_cleanup<-function(data.path, output.path, path.pattern, tf.write = FALSE, tf.
 
       # conditional write.csv at output path
       if(tf.write == TRUE) {
+        Data_ID<-stringr::str_split_fixed(Data_ID,".csv",2)[1,1] # remove ".csv" from the filename before renaming
         if(exists(output.path) == T){
           write.csv(condCal, paste0(output.path,'/',Data_ID,'_tidy.csv'))
         } else {
