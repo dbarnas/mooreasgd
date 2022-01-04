@@ -22,8 +22,8 @@ CT_cleanup<-function(data.path, output.path, path.pattern, tf.write = FALSE, tf.
 
   # Create an empty dataframe to store all subsequent tidied df's into
   full_df <- tibble::tibble(
-    date = as_datetime(NA),
-    List.ID = as.character(),
+    date = lubridate::as_datetime(NA),
+    LoggerID = as.character(),
     TempInSitu = as.numeric(),
     E_Conductivity = as.numeric())
 
@@ -40,36 +40,35 @@ CT_cleanup<-function(data.path, output.path, path.pattern, tf.write = FALSE, tf.
     condCal <- file.names %>%
       purrr::map_dfr(~ readr::read_csv(file.path(data.path, .), skip=1, col_names=T)) # read all csv files at the file path, skipping 1 line of metadata and bind together
 
+    Data_ID<-stringr::str_split_fixed(Data_ID,".csv",2)[1,1] # remove ".csv" from the file name
+
     if(cond.range == "high"){
     condCal<-condCal %>%
       dplyr::select(contains('Date'), contains("High Range"), contains("Temp")) %>%
-      dplyr::mutate(List.ID=Data_ID) %>%  # add column for file ID
+      dplyr::mutate(LoggerID=Data_ID) %>%  # add column for file ID
       dplyr::rename(date=contains("Date"),
                     TempInSitu=contains("Temp"),
                     E_Conductivity=contains("High Range")) %>%
       tidyr::drop_na() %>%
-      tidyr::separate(col = 'List.ID', into = c('List.ID',NA), sep = ".csv", remove = T) %>%  # remove the '.csv'
       dplyr::mutate(date = lubridate::mdy_hms(date))
     } else if(cond.range == "low") {
       condCal<-condCal %>%
         dplyr::select(contains('Date'), contains("Low Range"), contains("Temp")) %>%
-        dplyr::mutate(List.ID=Data_ID) %>%  # add column for file ID
+        dplyr::mutate(LoggerID=Data_ID) %>%  # add column for file ID
         dplyr::rename(date=contains("Date"),
                       TempInSitu=contains("Temp"),
                       E_Conductivity=contains("Low Range")) %>%
         tidyr::drop_na() %>%
-        tidyr::separate(col = 'List.ID', into = c('List.ID',NA), sep = ".csv", remove = T) %>%  # remove the '.csv'
         dplyr::mutate(date = lubridate::mdy_hms(date))
     } else if(cond.range == "highlow") {
       condCal<-condCal %>%
         dplyr::select(contains('Date'), contains("High Range"), contains("Low Range"), contains("Temp")) %>%
-        dplyr::mutate(List.ID=Data_ID) %>%  # add column for file ID
+        dplyr::mutate(LoggerID=Data_ID) %>%  # add column for file ID
         dplyr::rename(date=contains("Date"),
                       TempInSitu=contains("Temp"),
                       E_Conductivity_High=contains("High Range"),
                       E_Conductivity_Low=contains("Low Range")) %>%
         tidyr::drop_na() %>%
-        tidyr::separate(col = 'List.ID', into = c('List.ID',NA), sep = ".csv", remove = T) %>%  # remove the '.csv'
         dplyr::mutate(date = lubridate::mdy_hms(date))
     }
 
@@ -77,18 +76,14 @@ CT_cleanup<-function(data.path, output.path, path.pattern, tf.write = FALSE, tf.
       dplyr::full_join(condCal) # save your dataframes into a larger df
 
     # conditional write.csv at output path
-    Data_ID<-stringr::str_split_fixed(Data_ID,".csv",2)[1,1] # remove ".csv" from the file name before renaming
     if(tf.write == TRUE) {
-      if(exists(output.path) == T){
-      write.csv(condCal, paste0(output.path,'/',Data_ID,'_tidy.csv'))
-      } else {
-      write.csv(condCal, paste0(data.path,'/',Data_ID,'_tidy.csv'))
+      if(exists('output.path') == T){
+      write_csv(condCal, paste0(output.path,'/',Data_ID,'_tidy.csv'))
+      } else if(exists('output.path') == F) {
+      write_csv(condCal, paste0(data.path,'/',Data_ID,'_tidy.csv'))
       }
     }
    }
-
-  full_df <- full_df %>%
-    dplyr::rename(LoggerID = List.ID)
 } else { # end of if(hobo.cal == FALSE)
 
     # Create a list of all files within the directory folder
@@ -97,7 +92,7 @@ CT_cleanup<-function(data.path, output.path, path.pattern, tf.write = FALSE, tf.
     # Create an empty dataframe to store all subsequent tidied df's into
     full_df <- tibble::tibble(
       date = as_datetime(NA),
-      List.ID = as.character(),
+      LoggerID = as.character(),
       TempInSitu = as.numeric(),
       E_Conductivity = as.numeric(),
       Salinity_psu = as.numeric())
@@ -112,41 +107,40 @@ CT_cleanup<-function(data.path, output.path, path.pattern, tf.write = FALSE, tf.
 
       file.names<-basename(list.files(data.path, pattern = c(Data_ID, "csv$"), recursive = tf.recursive)) #list all csv file names in the folder and subfolders
 
+      Data_ID<-stringr::str_split_fixed(Data_ID,".csv",2)[1,1] # remove ".csv" from the file name before renaming
+
       condCal <- file.names %>%
         purrr::map_dfr(~ readr::read_csv(file.path(data.path, .), skip=1, col_names=T)) # read all csv files at the file path, skipping 1 line of metadata and bind together
     if(cond.range == "high") {
       condCal<-condCal %>%
         dplyr::select(contains('Date'), contains("High Range"), contains("Temp"), contains("Salinity")) %>%
-        dplyr::mutate(List.ID=Data_ID) %>%  # add column for file ID
+        dplyr::mutate(LoggerID=Data_ID) %>%  # add column for file ID
         dplyr::rename(date=contains("Date"),
                       TempInSitu=contains("Temp"),
                       E_Conductivity=contains("High Range"),
                       Salinity_psu=contains("Salinity")) %>%
         tidyr::drop_na() %>%
-        tidyr::separate(col = 'List.ID', into = c('List.ID',NA), sep = ".csv", remove = T) %>%  # remove the '.csv'
         dplyr::mutate(date = lubridate::mdy_hms(date))
     } else if(cond.range == "low") {
       condCal<-condCal %>%
         dplyr::select(contains('Date'), contains("Low Range"), contains("Temp"), contains("Salinity")) %>%
-        dplyr::mutate(List.ID=Data_ID) %>%  # add column for file ID
+        dplyr::mutate(LoggerID=Data_ID) %>%  # add column for file ID
         dplyr::rename(date=contains("Date"),
                       TempInSitu=contains("Temp"),
                       E_Conductivity=contains("Low Range"),
                       Salinity_psu=contains("Salinity")) %>%
         tidyr::drop_na() %>%
-        tidyr::separate(col = 'List.ID', into = c('List.ID',NA), sep = ".csv", remove = T) %>%  # remove the '.csv'
         dplyr::mutate(date = lubridate::mdy_hms(date))
     } else if(cond.range == "highlow") {
       condCal<-condCal %>%
         dplyr::select(contains('Date'),contains("Low Range"), contains("High Range"), contains("Temp"), contains("Salinity")) %>%
-        dplyr::mutate(List.ID=Data_ID) %>%  # add column for file ID
+        dplyr::mutate(LoggerID=Data_ID) %>%  # add column for file ID
         dplyr::rename(date=contains("Date"),
                       TempInSitu=contains("Temp"),
                       E_Conductivity_High=contains("High Range"),
                       E_Conductivity_Low=contains("Low Range"),
                       Salinity_psu=contains("Salinity")) %>%
         tidyr::drop_na() %>%
-        tidyr::separate(col = 'List.ID', into = c('List.ID',NA), sep = ".csv", remove = T) %>%  # remove the '.csv'
         dplyr::mutate(date = lubridate::mdy_hms(date))
     }
 
@@ -154,19 +148,14 @@ CT_cleanup<-function(data.path, output.path, path.pattern, tf.write = FALSE, tf.
         dplyr::full_join(condCal) # save your dataframes into a larger df
 
       # conditional write.csv at output path
-      Data_ID<-stringr::str_split_fixed(Data_ID,".csv",2)[1,1] # remove ".csv" from the file name before renaming
       if(tf.write == TRUE) {
         if(exists(output.path) == T){
-          write.csv(condCal, paste0(output.path,'/',Data_ID,'_tidy.csv'))
+          write_csv(condCal, paste0(output.path,'/',Data_ID,'_tidy.csv'))
         } else {
-          write.csv(condCal, paste0(data.path,'/',Data_ID,'_tidy.csv'))
+          write_csv(condCal, paste0(data.path,'/',Data_ID,'_tidy.csv'))
         }
       }
     }
-
-
-    full_df <- full_df %>%
-      dplyr::rename(LoggerID = List.ID)
 } # end of if(hobo.csv == TRUE)
 
   return(full_df) # return full dataframe
