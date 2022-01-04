@@ -8,32 +8,65 @@
 #'
 #' @param data.path Path to the input files
 #' @param output.path Path for the output files
+#' @param path.pattern Character string or object referencing a character string that identifies pH logger data within the specified file path
 #' @param pH.serial Logger serial number used in naming the input file
-#' @param tf_write Logical parameter indicating whether to save output files in an output folder. Default = FALSE.
-#' @param recursive_tf Logical parameter indicating whether to search within folders at the file path. Default = FALSE
-#' @return A cleaned dataframe of pH logger data
+#' @param tf.write Logical parameter indicating whether to save output files in an output folder. Default = FALSE.
+#' @param tf.recursive Logical parameter indicating whether to search within folders at the file path. Default = FALSE
+#' @return For every imported pH data file, one tidied file is exported and returned
 #' @export
-pH_cleanup <- function(data.path, pH.serial, output.path, tf_write = FALSE, recursive_tf = FALSE) {
+pH_cleanup <- function(data.path, output.path, path.pattern, tf.write = FALSE, tf.recursive = FALSE) {
 
   # list all csv file names in the folder and subfolders
-  file.names.Cal<-basename(list.files(data.path, pattern = c(pH.serial,"csv$", recursive = recursive_tf)))
+  file.names.full<-basename(list.files(data.path, pattern = path.pattern, recursive = tf.recursive)) #list all csv file names in the folder and subfolders
 
-  # read all csv files at the file path, skipping 1 line of metadata
-  pHLog <- file.names.Cal %>%
-    purrr::map_dfr(~ readr:::read_csv(file.path(data.path, .), skip=2, col_names=T))
 
-  # clean file: only select useful columns, create serial# column, rename columns
-  pHLog<-pHLog %>%
-    dplyr::select(contains('Date'), contains(pH.serial), contains("temp"), mV, pH) %>%
-    dplyr::mutate(Serial=paste0("pH_",pH.serial)) %>%
-    dplyr::rename(date=contains("Date"),
-                  TempInSitu=contains("Temp")) %>%
-    tidyr::drop_na()
+  # Create an empty dataframe to store all subsequent tidied df's into
+  full_df <- tibble::tibble(
+    date = as_datetime(NA),
+    LoggerID = as.character(),
+    mV = as.numeric(),
+    pH = as.numeric(),
+    TempInSitu = as.numeric())
 
-  # conditional write.csv at output path
-  if(tf_write == TRUE) {
-    write.csv(condCal, paste0(output.path,'/pH_',pH.serial,'_tidy.csv'))
+
+  # For each listed file:
+  ## Load the dataframe,
+  ## Tidy the data,
+  ## Create a column for temperature-compensated specific conductance, and
+  ## Export the new file to an output folder
+  for(i in 1:length(file.names.full)) {
+    Data_ID<-file.names.full[[i]]
+
+    file.names<-basename(list.files(data.path, pattern = c(Data_ID, "csv$"), recursive = tf.recursive)) #list all csv file names in the folder and subfolders
+
+    pHLog <- file.names %>%
+      purrr::map_dfr(~ readr::read_csv(file.path(data.path, .), skip=1, col_names=T)) # read all csv files at the file path, skipping 1 line of metadata and bind together
+
+    Data_ID<-stringr::str_split_fixed(Data_ID,".csv",2)[1,1] # remove ".csv" from the file name
+
+    pHLog<-pHLog %>%
+      dplyr::select(contains('Date'), contains("Temp"), contains("mV"), contains("pH")) %>%
+      dplyr::mutate(LoggerID=Data_ID) %>%  # add column for file ID
+      dplyr::rename(date=contains("Date"),
+                    TempInSitu=contains("Temp"),
+                    mV=contains("mv"),
+                    pH=contains("pH")) %>%
+      tidyr::drop_na() %>%
+      dplyr::mutate(date = lubridate::mdy_hms(date))
+
+    full_df <- full_df %>%
+      rbind(pHLog)
+
+    # conditional write csv at output path
+    if(tf.write == TRUE) {
+      if(exists('output.path') == T){
+        write_csv(pHLog, paste0(output.path,'/',Data_ID,'_tidypH.csv'))
+      } else if(exists('output.path') == F) {
+        write_csv(pHLog, paste0(data.path,'/',Data_ID,'_tidypH.csv'))
+      }
+    }
   }
 
-  return(pHLog)
+
+  return(full_df) # return a list of dataframes
 }
