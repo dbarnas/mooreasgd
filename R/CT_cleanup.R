@@ -77,8 +77,8 @@ CT_cleanup<-function(data.path, output.path, path.pattern, tf.write = FALSE, tf.
       dplyr::full_join(condCal) # save your dataframes into a larger df
 
     # conditional write.csv at output path
+    Data_ID<-stringr::str_split_fixed(Data_ID,".csv",2)[1,1] # remove ".csv" from the file name before renaming
     if(tf.write == TRUE) {
-      Data_ID<-stringr::str_split_fixed(Data_ID,".csv",2)[1,1] # remove ".csv" from the filename before renaming
       if(exists(output.path) == T){
       write.csv(condCal, paste0(output.path,'/',Data_ID,'_tidy.csv'))
       } else {
@@ -154,8 +154,8 @@ CT_cleanup<-function(data.path, output.path, path.pattern, tf.write = FALSE, tf.
         dplyr::full_join(condCal) # save your dataframes into a larger df
 
       # conditional write.csv at output path
+      Data_ID<-stringr::str_split_fixed(Data_ID,".csv",2)[1,1] # remove ".csv" from the file name before renaming
       if(tf.write == TRUE) {
-        Data_ID<-stringr::str_split_fixed(Data_ID,".csv",2)[1,1] # remove ".csv" from the filename before renaming
         if(exists(output.path) == T){
           write.csv(condCal, paste0(output.path,'/',Data_ID,'_tidy.csv'))
         } else {
