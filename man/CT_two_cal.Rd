@@ -2,7 +2,7 @@
 % Please edit documentation in R/CT_two_cal.R
 \name{CT_two_cal}
 \alias{CT_two_cal}
-\title{Calculate temperature-compensated Specific Conductance and two-point calibration for CT logger data}
+\title{Calculate temperature-compensated Specific Conductance from a two-point calibration (single high reference and single low reference) for CT logger data}
 \usage{
 CT_two_cal(
   data,
@@ -27,7 +27,7 @@ CT_two_cal(
 
 \item{temp}{Temperature at which electrical conductivity values were logged}
 
-\item{EC.logger}{Electrical conductivity logged at time of calibration}
+\item{EC.logger}{Electrical conductivity recorded by logger at time of calibration}
 
 \item{high.ref}{The high range conductivity calibration solution specific conductance value, uS/cm at 25degC}
 

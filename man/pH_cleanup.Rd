@@ -6,25 +6,27 @@
 \usage{
 pH_cleanup(
   data.path,
-  pH.serial,
   output.path,
-  tf_write = FALSE,
-  recursive_tf = FALSE
+  path.pattern,
+  tf.write = FALSE,
+  tf.recursive = FALSE
 )
 }
 \arguments{
 \item{data.path}{Path to the input files}
 
-\item{pH.serial}{Logger serial number used in naming the input file}
-
 \item{output.path}{Path for the output files}
 
-\item{tf_write}{Logical parameter indicating whether to save output files in an output folder. Default = FALSE.}
+\item{path.pattern}{Character string or object referencing a character string that identifies pH logger data within the specified file path}
 
-\item{recursive_tf}{Logical parameter indicating whether to search within folders at the file path. Default = FALSE}
+\item{tf.write}{Logical parameter indicating whether to save output files in an output folder. Default = FALSE.}
+
+\item{tf.recursive}{Logical parameter indicating whether to search within folders at the file path. Default = FALSE}
+
+\item{pH.serial}{Logger serial number used in naming the input file}
 }
 \value{
-A cleaned dataframe of pH logger data
+For every imported pH data file, one tidied file is exported and returned
 }
 \description{
 This function loads a raw pH file. It searches a directory for the correct logger's serial number,

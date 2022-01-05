@@ -19,12 +19,12 @@ WL_cleanup(
 
 \item{path.pattern}{Character string or object referencing a character string that identifies WL logger data within the specified file path}
 
-\item{tf.write}{Logical parameter indicating whether to save output files in an output folder. No default.}
+\item{tf.write}{Logical parameter indicating whether to save output files in an output folder. Default = FALSE.}
 
 \item{tf.recursive}{Logical parameter indicating whether to search within folders at the data.path. Default = FALSE}
 }
 \value{
-For every imported CT data file, one tidied file with temperature-compensated conductance is exported and returned
+For every imported water level data file, one tidied file is exported and returned
 }
 \description{
 This function loads all raw .csv files within the data.path folder.

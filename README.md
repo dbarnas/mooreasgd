@@ -1,9 +1,8 @@
 # mooreasgd
 
-A package to clean, organize, and analyze data from loggers placed near submarine groundwater discharge on coral reefs in Mo'orea, French Polynesia for research in the Silbiger Lab, CSUN.
+A package to clean, organize, and analyze data from Onset HOBO loggers. Functions have been created for and tested on HOBO U24-002-C Conductivity-Temperature, HOBO MX2501 pH, and HOBO U20 Water Level loggers.
 
 ### Available functions
-- CT_roundup  
 - CT_cleanup  
 - CT_one_cal  
 - CT_two_cal  

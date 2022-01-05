@@ -1,4 +1,4 @@
-#' Calculate temperature-compensated Specific Conductance and two-point calibration for CT logger data
+#' Calculate temperature-compensated Specific Conductance from a two-point calibration (single high reference and single low reference) for CT logger data
 #'
 #' This function reads in a dataframe containing electrical conductivity logs from a conductivity-temperature logger
 #' and calculates specific conductance from in situ electrical conductivity and temperature readings.
@@ -7,7 +7,7 @@
 #' @param data The dataframe containing raw Electrical Conductivity values
 #' @param date Date and time column used to filter out calibration times
 #' @param temp Temperature at which electrical conductivity values were logged
-#' @param EC.logger Electrical conductivity logged at time of calibration
+#' @param EC.logger Electrical conductivity recorded by logger at time of calibration
 #' @param high.ref The high range conductivity calibration solution specific conductance value, uS/cm at 25degC
 #' @param low.ref The low range conductivity calibration solution specific conductance value, uS/cm at 25degC
 #' @param high.ref.temp High range in situ temperature, value from a secondary probe
