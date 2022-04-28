@@ -50,7 +50,7 @@ CT_cleanup<-function(data.path, output.path, path.pattern, tf.write = FALSE, tf.
                     TempInSitu=contains("Temp"),
                     E_Conductivity=contains("High Range")) %>%
       tidyr::drop_na() %>%
-      dplyr::mutate(date = lubridate::mdy_hms(date))
+      dplyr::mutate(date = if_else(str_length(date) >= 15, lubridate::mdy_hms(date), lubridate::mdy_hm(date))) # if date includes seconds, mdy_hms, else mdy_hm
     } else if(cond.range == "low") {
       condCal<-condCal %>%
         dplyr::select(contains('Date'), contains("Low Range"), contains("Temp")) %>%
@@ -59,7 +59,7 @@ CT_cleanup<-function(data.path, output.path, path.pattern, tf.write = FALSE, tf.
                       TempInSitu=contains("Temp"),
                       E_Conductivity=contains("Low Range")) %>%
         tidyr::drop_na() %>%
-        dplyr::mutate(date = lubridate::mdy_hms(date))
+        dplyr::mutate(date = if_else(str_length(date) >= 15, lubridate::mdy_hms(date), lubridate::mdy_hm(date))) # if date includes seconds, mdy_hms, else mdy_hm
     } else if(cond.range == "highlow") {
       condCal<-condCal %>%
         dplyr::select(contains('Date'), contains("High Range"), contains("Low Range"), contains("Temp")) %>%
@@ -69,7 +69,7 @@ CT_cleanup<-function(data.path, output.path, path.pattern, tf.write = FALSE, tf.
                       E_Conductivity_High=contains("High Range"),
                       E_Conductivity_Low=contains("Low Range")) %>%
         tidyr::drop_na() %>%
-        dplyr::mutate(date = lubridate::mdy_hms(date))
+        dplyr::mutate(date = if_else(str_length(date) >= 15, lubridate::mdy_hms(date), lubridate::mdy_hm(date))) # if date includes seconds, mdy_hms, else mdy_hm
     }
 
     full_df <- full_df %>%
@@ -120,7 +120,7 @@ CT_cleanup<-function(data.path, output.path, path.pattern, tf.write = FALSE, tf.
                       E_Conductivity=contains("High Range"),
                       Salinity_psu=contains("Salinity")) %>%
         tidyr::drop_na() %>%
-        dplyr::mutate(date = lubridate::mdy_hms(date))
+        dplyr::mutate(date = if_else(str_length(date) >= 15, lubridate::mdy_hms(date), lubridate::mdy_hm(date))) # if date includes seconds, mdy_hms, else mdy_hm
     } else if(cond.range == "low") {
       condCal<-condCal %>%
         dplyr::select(contains('Date'), contains("Low Range"), contains("Temp"), contains("Salinity")) %>%
@@ -130,7 +130,7 @@ CT_cleanup<-function(data.path, output.path, path.pattern, tf.write = FALSE, tf.
                       E_Conductivity=contains("Low Range"),
                       Salinity_psu=contains("Salinity")) %>%
         tidyr::drop_na() %>%
-        dplyr::mutate(date = lubridate::mdy_hms(date))
+        dplyr::mutate(date = if_else(str_length(date) >= 15, lubridate::mdy_hms(date), lubridate::mdy_hm(date))) # if date includes seconds, mdy_hms, else mdy_hm
     } else if(cond.range == "highlow") {
       condCal<-condCal %>%
         dplyr::select(contains('Date'),contains("Low Range"), contains("High Range"), contains("Temp"), contains("Salinity")) %>%
@@ -141,7 +141,7 @@ CT_cleanup<-function(data.path, output.path, path.pattern, tf.write = FALSE, tf.
                       E_Conductivity_Low=contains("Low Range"),
                       Salinity_psu=contains("Salinity")) %>%
         tidyr::drop_na() %>%
-        dplyr::mutate(date = lubridate::mdy_hms(date))
+        dplyr::mutate(date = if_else(str_length(date) >= 15, lubridate::mdy_hms(date), lubridate::mdy_hm(date))) # if date includes seconds, mdy_hms, else mdy_hm
     }
 
       full_df <- full_df %>%
