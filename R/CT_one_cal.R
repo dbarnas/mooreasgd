@@ -37,7 +37,7 @@ CT_one_cal<-function(data, date, temp, EC.logger, cal.ref, cal.ref.temp, startCa
   cal.ref<-1000*gsw::gsw_C_from_SP(SP = cal.sp, t = mean.temp, p = 10)
 
   # assuming the temperature of the standard solution is equivalent to the temperature read by the logger
-  cal.ref.temp = mean.temp
+  # cal.ref.temp = mean.temp # no longer making the above assumption
   } # else, use cal.ref = ec reading from secondary probe and cal.ref.temp = temperature reading from probe
 
   # Logger data in pre-deployment calibration
