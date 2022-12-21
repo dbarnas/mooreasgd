@@ -12,6 +12,6 @@ A package to clean, organize, and analyze data from Onset HOBO loggers. Function
 
 ### Install and Load _mooreasgd_
 
-install.packages('devtools')
-devtools::install_github("dbarnas/mooreasgd")
-library(mooreasgd)
+install.packages('devtools')  
+devtools::install_github("dbarnas/mooreasgd")  
+library(mooreasgd)  
